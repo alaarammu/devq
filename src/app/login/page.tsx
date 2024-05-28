@@ -2,9 +2,9 @@ import Head from "next/head";
 import Image from "next/image";
 import Image1 from "/public/images/logo-dark.png";
 import Link from "next/link";
-import Footer from "./components/footer";
+import Footer from "../components/footer";
 
-const Home = () => {
+const Login = () => {
   return (
     <div>
       <Head>
@@ -18,7 +18,7 @@ const Home = () => {
         <div className="absolute left-10">
           <Image alt="Logo" src={Image1} width={200} height={150} />
           <h1 className="text-white text-4xl font-mono font-thin mt-9 ml-4">
-            Hello, DevQ!
+            Welcome to DevQ!
           </h1>
           <pre className="text-gray-400 text-left p-4">
             {`#include <iostream>
@@ -34,23 +34,30 @@ int main() {
           <div className="bg-blue-950 w-2/3"></div>
           <div className="bg-white w-1/2 flex flex-col justify-center items-center text-center">
             <h1 className="text-blue-950 text-2xl font-semibold">
-              Ready for the journey ahead?
+              Your journey awaits!
             </h1>
-            <h1 className="text-blue-950 text-2xl font-semibold">
-              Let's start now!
-            </h1>
-            <div className="flex mt-4">
-              <Link href="./login" className="mr-4">
-                <button className=" font-semibold bg-indigo-400 text-white px-14 py-2 rounded hover:bg-indigo-700">
+            <div className="flex flex-col mt-4 " >
+              <input
+                type="text"
+                placeholder="Email Address"
+                className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
+              />
+              <Link href="/" className="mt-4">
+                <button className="font-semibold bg-indigo-400 text-white pl-20 pr-20 py-2 rounded hover:bg-indigo-700">
                   Login
                 </button>
               </Link>
+            </div>
+            <div className="flex items-center mt-2">
+              <h1 className="text-sm mr-2">Don't have an account?</h1>
               <Link href="./sign-up">
-                <button  className="font-semibold bg-indigo-400 text-white px-14 py-2 rounded hover:bg-indigo-700">
-                  Sign up
-                </button>
+                <button className="text-red-700 text-sm">Sign up</button>
               </Link>
-              
             </div>
             <Footer />
           </div>
@@ -60,4 +67,4 @@ int main() {
   );
 };
 
-export default Home;
+export default Login;
