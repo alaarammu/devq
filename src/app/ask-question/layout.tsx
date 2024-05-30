@@ -1,7 +1,12 @@
+import { ReactNode } from 'react';
 import Header from "../components/header";
 import Navbar from "../components/navbar";
 
-export default function MainLayout({ children }) {
+interface MainLayoutProps {
+  children: ReactNode; // Define children prop with ReactNode type
+}
+
+export default function MainLayout({ children }: MainLayoutProps) {
   const profileImage = "/images/logo-light.png"; // Provide the path to the profile image
 
   return (
