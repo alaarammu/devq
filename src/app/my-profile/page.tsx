@@ -1,21 +1,23 @@
 "use client";
 import { useState } from "react";
-import Header from "../components/header";
 import { CiCamera } from "react-icons/ci";
+import Image from "next/image";
 
 export default function MyProfile() {
-  const [imageSrc, setImageSrc] = useState("");
+  const [imageSrc, setImageSrc] = useState<string | ArrayBuffer | null>("");
   const [fullName, setFullName] = useState("John Doe");
   const [email, setEmail] = useState("john.doe@example.com");
   const [role, setRole] = useState("User");
   const [isEditable, setIsEditable] = useState(false);
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImageSrc(e.target.result);
+        if (e.target) {
+          setImageSrc(e.target.result);
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -33,10 +35,11 @@ export default function MyProfile() {
           <div className="relative w-32 h-32">
             <div className="relative rounded-full overflow-hidden w-full h-full">
               {imageSrc ? (
-                <img
-                  src={imageSrc}
+                <Image
+                  src={imageSrc as string}
                   alt="Profile"
                   className="w-full h-full object-cover"
+                  layout="fill"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-300 flex items-center justify-center">

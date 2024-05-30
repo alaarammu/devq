@@ -11,10 +11,10 @@ export default function Settings() {
     switch5: true,
   });
 
-  const handleToggle = (switchId) => {
+  const handleToggle = (switchId: string | number) => {
     setSwitches((prevState) => ({
       ...prevState,
-      [switchId]: !prevState[switchId],
+      [switchId]: !prevState[switchId as keyof typeof prevState],
     }));
   };
 

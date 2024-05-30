@@ -2,10 +2,15 @@
 
 import { useState, useRef } from 'react';
 import { FaBold, FaItalic, FaUnderline, FaCode, FaPaperclip, FaImage, FaRedo } from 'react-icons/fa';
-import Select from 'react-select';
+import Select, { MultiValue } from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-const options = [
+type OptionType = {
+  value: string;
+  label: string;
+};
+
+const options: OptionType[] = [
   { value: 'Golang', label: 'Golang' },
   { value: 'Java', label: 'Java' },
   { value: 'CSS', label: 'CSS' },
@@ -25,8 +30,8 @@ const animatedComponents = makeAnimated();
 
 export default function AskQuestion() {
   const [description, setDescription] = useState('');
-  const [selectedTags, setSelectedTags] = useState([]);
-  const editorRef = useRef(null);
+  const [selectedTags, setSelectedTags] = useState<MultiValue<OptionType>>([]);
+  const editorRef = useRef<HTMLDivElement>(null);
 
   const handleReset = () => {
     if (editorRef.current) {
@@ -35,13 +40,13 @@ export default function AskQuestion() {
     }
   };
 
-  const handleTagsChange = (selectedOptions) => {
+  const handleTagsChange = (selectedOptions: MultiValue<OptionType>) => {
     if (selectedOptions.length <= 3) {
       setSelectedTags(selectedOptions);
     }
   };
 
-  const executeCommand = (command, value = null) => {
+  const executeCommand = (command: string, value: string | undefined = undefined) => {
     document.execCommand(command, false, value);
   };
 

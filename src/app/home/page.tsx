@@ -1,16 +1,15 @@
 "use client";
-
 import { useState } from 'react';
 import { HiOutlineAdjustments } from "react-icons/hi";
 
 export default function Home() {
   const [activeButton, setActiveButton] = useState('new');
 
-  const handleButtonClick = (button) => {
+  const handleButtonClick = (button: string) => { // Specify the type of 'button' as string
     setActiveButton(button);
   };
 
-  const getButtonClasses = (button) => (
+  const getButtonClasses = (button: string) => (
     `border border-indigo-400 font-semibold py-3 px-3 
     ${activeButton === button ? 'bg-indigo-400 text-white' : 'bg-white text-indigo-400 hover:bg-indigo-400 hover:text-white focus:bg-indigo-400 focus:text-white'}
     flex-shrink-0 rounded-md`
