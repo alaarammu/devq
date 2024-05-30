@@ -11,9 +11,9 @@ export default function Home() {
   };
 
   const getButtonClasses = (button) => (
-    `border border-indigo-400 text-indigo-400 font-semibold py-3 px-3 bg-white
-     ${activeButton === button ? 'bg-indigo-400 text-white' : 'hover:bg-indigo-400 hover:text-white focus:bg-indigo-400 focus:text-white'}
-     flex-shrink-0 rounded-md`
+    `border border-indigo-400 font-semibold py-3 px-3 
+    ${activeButton === button ? 'bg-indigo-400 text-white' : 'bg-white text-indigo-400 hover:bg-indigo-400 hover:text-white focus:bg-indigo-400 focus:text-white'}
+    flex-shrink-0 rounded-md`
   );
 
   const getActiveText = () => {
@@ -60,7 +60,7 @@ export default function Home() {
             </button>
           </div>
           <div className="mr-9 font-semibold flex-shrink-0">
-            <a className="bg-red-400 text-white pt-5 pb-5 pl-5 pr-5 rounded-md hover:bg-red-300">
+            <a className="bg-red-400 text-white pt-5 pb-5 pl-5 pr-5 rounded-md hover:bg-red-300" href="./ask-question">
               Ask Question
             </a>
           </div>
