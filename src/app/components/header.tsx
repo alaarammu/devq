@@ -1,10 +1,10 @@
 "use client";
-
+import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { PiMegaphoneSimpleLight } from "react-icons/pi";
 
 export default function Header() {
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       console.log("Search triggered");
     }
