@@ -20,11 +20,11 @@ export default function Home() {
       case 'new':
         return 'New Questions';
       case 'today':
-        return 'Today’s Top Selected';
+        return 'Today`s Top Selected';
       case 'thisWeek':
-        return 'This Week’s Questions';
+        return 'This Week`s Questions';
       case 'thisMonth':
-        return 'This Month’s Questions';
+        return 'This Month`s Questions';
       default:
         return '';
     }
