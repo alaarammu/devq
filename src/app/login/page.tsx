@@ -54,7 +54,7 @@ int main() {
               </Link>
             </div>
             <div className="flex items-center mt-2">
-              <h1 className="text-sm mr-2">Don't have an account?</h1>
+              <h1 className="text-sm mr-2">Don&apos;t have an account?</h1>
               <Link href="./sign-up">
                 <button className="text-red-700 text-sm">Sign up</button>
               </Link>

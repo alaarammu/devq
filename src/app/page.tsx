@@ -37,7 +37,7 @@ int main() {
               Ready for the journey ahead?
             </h1>
             <h1 className="text-blue-950 text-2xl font-semibold">
-              Let's start now!
+              Let&apos;s start now!
             </h1>
             <div className="flex mt-4">
               <Link href="./login" className="mr-4">
