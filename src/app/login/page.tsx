@@ -47,7 +47,7 @@ int main() {
                 placeholder="Password"
                 className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
               />
-              <Link href="/" className="mt-4">
+              <Link href="./home/" className="mt-4">
                 <button className="font-semibold bg-indigo-400 text-white pl-20 pr-20 py-2 rounded hover:bg-indigo-700">
                   Login
                 </button>

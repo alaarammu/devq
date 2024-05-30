@@ -62,7 +62,7 @@ int main() {
                 placeholder="Retype Password"
                 className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
               />
-              <Link href="/" className="mt-4">
+              <Link href="./home" className="mt-4">
                 <button className="font-semibold bg-indigo-400 text-white px-6 py-2 rounded hover:bg-indigo-700">
                   Sign up
                 </button>
@@ -70,7 +70,7 @@ int main() {
             </div>
             <div className="flex items-center mt-2">
               <h1 className="text-sm mr-2">Already have an account?</h1>
-              <Link href="/">
+              <Link href="./login">
                 <button className="text-red-700 text-sm">Login</button>
               </Link>
             </div>
