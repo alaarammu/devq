@@ -2,35 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { FaBold, FaItalic, FaUnderline, FaCode, FaPaperclip, FaImage, FaRedo } from 'react-icons/fa';
-import Select, { MultiValue } from 'react-select';
-import makeAnimated from 'react-select/animated';
 
-type OptionType = {
-  value: string;
-  label: string;
-};
-
-const options: OptionType[] = [
-  { value: 'Golang', label: 'Golang' },
-  { value: 'Java', label: 'Java' },
-  { value: 'CSS', label: 'CSS' },
-  { value: 'Tailwind CSS', label: 'Tailwind CSS' },
-  { value: 'Python', label: 'Python' },
-  { value: 'JavaScript', label: 'JavaScript' },
-  { value: 'TypeScript', label: 'TypeScript' },
-  { value: 'Node', label: 'Node' },
-  { value: 'Nest js', label: 'Nest js' },
-  { value: 'NEXT.js', label: 'NEXT.js' },
-  { value: 'Vue', label: 'Vue' },
-  { value: 'Angular', label: 'Angular' },
-  { value: 'Express.js', label: 'Express.js' },
-];
-
-const animatedComponents = makeAnimated();
-
-export default function AskQuestion() {
+export default function AnswerQuestion() {
   const [description, setDescription] = useState('');
-  const [selectedTags, setSelectedTags] = useState<MultiValue<OptionType>>([]);
   const editorRef = useRef<HTMLDivElement>(null);
 
   const handleReset = () => {
@@ -40,31 +14,15 @@ export default function AskQuestion() {
     }
   };
 
-  const handleTagsChange = (selectedOptions: MultiValue<OptionType>) => {
-    if (selectedOptions.length <= 3) {
-      setSelectedTags(selectedOptions);
-    }
-  };
-
   const executeCommand = (command: string, value: string | undefined = undefined) => {
     document.execCommand(command, false, value);
   };
 
   return (
     <div className="mt-9 ml-11 mr-11">
-      <p className="text-2xl font-semibold">
-        Ask a Question
-      </p>
+      <p className="text-2xl font-semibold">Upload Answer</p>
       <div className="mt-8">
-        <h2 className="text-xl font-semibold">Question Title</h2>
-        <input 
-          type="text" 
-          placeholder="Title" 
-          className="mt-2 p-2 border border-gray-300 rounded-md w-full"
-        />
-      </div>
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold">Describe your Issue</h2>
+        <h2 className="text-xl font-semibold">Type your answer below</h2>
         <div className="mt-2 p-2 border border-gray-300 rounded-md w-full">
           <div className="flex justify-between mb-2">
             <div className="flex space-x-3">
@@ -99,17 +57,10 @@ export default function AskQuestion() {
           ></div>
         </div>
       </div>
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold">Tags</h2>
-        <Select
-          isMulti
-          components={animatedComponents}
-          value={selectedTags}
-          onChange={handleTagsChange}
-          options={options}
-          className="mt-2"
-          placeholder="Select up to 3 tags..."
-        />
+      <div className="mt-8 flex justify-center">
+        <button className="bg-red-400 text-white py-2 px-4 rounded hover:bg-red-300">
+          Upload
+        </button>
       </div>
     </div>
   );

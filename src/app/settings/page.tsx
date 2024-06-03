@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Loading from "./loading";
 
 export default function Settings() {
   const [switches, setSwitches] = useState({
@@ -10,6 +11,20 @@ export default function Settings() {
     switch4: true,
     switch5: true,
   });
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Simulate data fetching
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const handleToggle = (switchId: string | number) => {
     setSwitches((prevState) => ({

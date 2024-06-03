@@ -22,9 +22,10 @@ export default function Header() {
           />
           <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-950 text-2xl" />
         </div>
-        <PiMegaphoneSimpleLight className="text-3xl" />
+        <PiMegaphoneSimpleLight className="text-3xl" href="./activity"/>
       </div>
-      <div className="mt-6 w-full h-0.5 bg-gray-400"></div>
+      <div className="mt-6 w-full h-0.5 bg-gray-400">
+      </div>
     </div>
   );
-}
+} 
