@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { HiOutlineAdjustments } from "react-icons/hi";
+import Card from '../components/question-card/questionCard';
 
 export default function Home() {
   const [activeButton, setActiveButton] = useState('new');
@@ -65,12 +66,15 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="mt-8 px-3 ml-9">
+      {/* <div className="mt-8 px-3 ml-9">
         {activeButton === 'new' && <div>New Content</div>}
         {activeButton === 'today' && <div>Today&apos;s Content</div>}
         {activeButton === 'thisWeek' && <div>This Week&apos;s Content</div>}
         {activeButton === 'thisMonth' && <div>This Month&apos;s Content</div>}
         {activeButton === 'adjustments' && <div>Adjustments Content</div>}
+      </div> */}
+      <div className='mt-8 px-8' >
+        <Card />
       </div>
     </div>
   );
