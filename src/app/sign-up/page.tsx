@@ -1,10 +1,53 @@
+"use client"
+import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Image1 from "/public/images/logo-dark.png";
 import Link from "next/link";
 import Footer from "../components/footer";
+import { createUserAndAssignRole } from '../../../services/authServices/authService';
+import { createCompany } from "../../../services/authServices/localAuthService";
 
-const Login = () => {
+const SignUp = () => {
+
+  const [companyName, setCompanyName] = useState('');
+  const [supportEmail, setSupportEmail] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+  const [error, setError] = useState('');
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== retypePassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    const roleId = 'rol_2rCkzAddsZmdnXk5';
+
+    try {
+      const userData = {
+        email,
+        password,
+        connection: "Username-Password-Authentication",
+        email_verified: true
+      };
+
+      const response = await createUserAndAssignRole(userData, roleId);
+      console.log("data", response)
+      if (response.email_verified) {
+        const name = email.split('@')[0];
+        const response = await createCompany({ name, email });
+        console.log('Response:', response);
+      }
+
+    } catch (err: any) {
+      console.log("Error", err)
+      setError(`An error occurred while signing up.`);
+    }
+  };
   return (
     <div>
       <Head>
@@ -36,38 +79,51 @@ int main() {
             <h1 className="text-blue-950 text-2xl font-semibold">
               Your journey awaits!
             </h1>
-            <div className="flex flex-col mt-4">
-              <input
-                type="text"
-                placeholder="Full Name"
-                className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
-              />
-              <input
-                type="text"
-                placeholder="Role"
-                className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
-              />
-              <input
-                type="text"
-                placeholder="Email Address"
-                className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
-              />
-              <input
-                type="password"
-                placeholder="Create Password"
-                className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
-              />
-               <input
-                type="password"
-                placeholder="Retype Password"
-                className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
-              />
-              <Link href="./home" className="mt-4">
-                <button className="font-semibold bg-indigo-400 text-white px-6 py-2 rounded hover:bg-indigo-700">
+            <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
+              <div className="flex flex-col mt-4">
+                <input
+                  type="text"
+                  placeholder="Company Name"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Company Support Email"
+                  value={supportEmail}
+                  onChange={(e) => setSupportEmail(e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Your Own Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
+                />
+                <input
+                  type="password"
+                  placeholder="Create Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
+                />
+                <input
+                  type="password"
+                  placeholder="Retype Password"
+                  value={retypePassword}
+                  onChange={(e) => setRetypePassword(e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded mt-2 focus:outline-none focus:border-blue-400"
+                />
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+                {/* <Link href="./home" className="mt-4"> */}
+                <button type="submit" className="font-semibold bg-indigo-400 text-white px-6 py-2 rounded hover:bg-indigo-700 mt-2">
                   Sign up
                 </button>
-              </Link>
-            </div>
+                {/* </Link> */}
+              </div>
+            </form>
             <div className="flex items-center mt-2">
               <h1 className="text-sm mr-2">Already have an account?</h1>
               <Link href="./login">
@@ -82,4 +138,4 @@ int main() {
   );
 };
 
-export default Login;
+export default SignUp;
