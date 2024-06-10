@@ -1,66 +1,73 @@
 "use client";
-
-import { useState, useRef } from 'react';
-import { FaBold, FaItalic, FaUnderline, FaCode, FaPaperclip, FaImage, FaRedo } from 'react-icons/fa';
+import { useState } from "react";
 
 export default function AnswerQuestion() {
-  const [description, setDescription] = useState('');
-  const editorRef = useRef<HTMLDivElement>(null);
+  // Example question title
+  const questionTitle = "How do I reverse a linked list to change the order of its elements?";
 
-  const handleReset = () => {
-    if (editorRef.current) {
-      editorRef.current.innerHTML = '';
-      setDescription('');
-    }
-  };
+  const [isCopied, setIsCopied] = useState(false);
 
-  const executeCommand = (command: string, value: string | undefined = undefined) => {
-    document.execCommand(command, false, value);
+  const handleCopy = () => {
+    const exampleCode = `function reverseLinkedList(head) {
+  let prev = null;
+  let current = head;
+  while (current !== null) {
+    const next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+  return prev;
+}`;
+
+    navigator.clipboard.writeText(exampleCode)
+      .then(() => {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      })
+      .catch(err => console.error('Failed to copy text: ', err));
   };
 
   return (
-    <div className="mt-9 ml-11 mr-11">
-      <p className="text-2xl font-semibold">Upload Answer</p>
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold">Type your answer below</h2>
-        <div className="mt-2 p-2 border border-gray-300 rounded-md w-full">
-          <div className="flex justify-between mb-2">
-            <div className="flex space-x-3">
-              <button className="p-2 hover:bg-gray-200 rounded" onClick={() => executeCommand('bold')}>
-                <FaBold />
-              </button>
-              <button className="p-2 hover:bg-gray-200 rounded" onClick={() => executeCommand('italic')}>
-                <FaItalic />
-              </button>
-              <button className="p-2 hover:bg-gray-200 rounded" onClick={() => executeCommand('underline')}>
-                <FaUnderline />
-              </button>
-              <button className="p-2 hover:bg-gray-200 rounded" onClick={() => executeCommand('insertHTML', '<pre><code></code></pre>')}>
-                <FaCode />
-              </button>
-              <button className="p-2 hover:bg-gray-200 rounded">
-                <FaPaperclip />
-              </button>
-              <button className="p-2 hover:bg-gray-200 rounded">
-                <FaImage />
-              </button>
-            </div>
-            <button className="p-2 hover:bg-gray-200 rounded" onClick={handleReset}>
-              <FaRedo />
-            </button>
-          </div>
-          <div
-            contentEditable
-            ref={editorRef}
-            className="w-full p-2 border border-gray-300 rounded-md h-48"
-            onInput={(e) => setDescription(e.currentTarget.innerHTML)}
-          ></div>
-        </div>
-      </div>
-      <div className="mt-8 flex justify-center">
-        <button className="bg-red-400 text-white py-2 px-4 rounded hover:bg-red-300">
-          Upload
+    <div className="mt-9 mb-9 ml-11 mr-11">
+      <h1 className="text-2xl text-blue-950">
+        {/* Render the question title */}
+        {questionTitle}
+      </h1>
+      <h2 className="text-sm mt-4 text-blue-950">
+        Posted {/* How long ago */}
+      </h2>
+      <h2 className="mt-9 text-blue-950">
+        I am working on vue element-plus upload component to upload the image to the express server.
+
+        Here is the client side.
+      </h2>
+
+      <div className="mt-9 relative bg-gray-800 text-white font-mono p-4 rounded-lg shadow-lg">
+        <button
+          className="absolute top-2 right-2 bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 focus:outline-none"
+          onClick={handleCopy}
+        >
+          {isCopied ? 'Copied' : 'Copy Code'}
         </button>
+        <pre className="whitespace-pre-wrap">
+          <code>
+            {`function reverseLinkedList(head) {
+  let prev = null;
+  let current = head;
+  while (current !== null) {
+    const next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+  return prev;
+}`}
+          </code>
+        </pre>
+      </div>
+      <div className="mt-9">
+        <AnswerQuestion />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import Card from '../components/question-card/questionCard';
 export default function Home() {
   const [activeButton, setActiveButton] = useState('new');
 
-  const handleButtonClick = (button: string) => { // Specify the type of 'button' as string
+  const handleButtonClick = (button: string) => {
     setActiveButton(button);
   };
 
@@ -21,24 +21,24 @@ export default function Home() {
       case 'new':
         return 'New Questions';
       case 'today':
-        return 'Todays Top Selected';
+        return 'Today\'s Top Selected';
       case 'thisWeek':
-        return 'This Weeks Questions';
+        return 'This Week\'s Questions';
       case 'thisMonth':
-        return 'This Months Questions';
+        return 'This Month\'s Questions';
       default:
         return '';
     }
   };
 
   return (
-    <div>
+    <div className="w-full overflow-x-auto"> {/* Allow horizontal scroll on small screens */}
       <div className="mt-9 px-3 ml-9">
-        <div className="text-2xl font-semibold mb-3 ">
+        <div className="text-2xl font-semibold mb-3">
           {getActiveText()}
         </div>
         <div className="flex justify-between items-center pt-5">
-          <div className="bg-white p-3 flex space-x-3 border border-indigo-400 rounded-md ">
+          <div className="bg-white p-3 flex space-x-3 border border-indigo-400 rounded-md flex-shrink-0 mr-9">
             <button onClick={() => handleButtonClick('new')} className={getButtonClasses('new')}>
               New
             </button>
@@ -56,24 +56,17 @@ export default function Home() {
             </button>
 
             <button onClick={() => handleButtonClick('adjustments')} className="flex-shrink-0">
-              <HiOutlineAdjustments className={`text-5xl p-2 rounded ${activeButton === 'adjustments' ? 'bg-indigo-400 text-white' : 'bg-white text-indigo-400 hover:bg-indigo-400 hover:text-white'}`} />
+              <HiOutlineAdjustments className={`text-5xl p-2 rounded ${activeButton === 'adjustments' ? 'bg-indigo-400 text-white' : 'bg-white text-indigo-400 '}flex-shrink-0`} />
             </button>
           </div>
           <div className="mr-9 font-semibold flex-shrink-0">
-            <a className="bg-red-400 text-white pt-5 pb-5 pl-5 pr-5 rounded-md hover:bg-red-300" href="./ask-question">
+            <a className="bg-red-400 text-white py-3 px-5 rounded-md hover:bg-red-300" href="./ask-question">
               Ask Question
             </a>
           </div>
         </div>
       </div>
-      {/* <div className="mt-8 px-3 ml-9">
-        {activeButton === 'new' && <div>New Content</div>}
-        {activeButton === 'today' && <div>Today&apos;s Content</div>}
-        {activeButton === 'thisWeek' && <div>This Week&apos;s Content</div>}
-        {activeButton === 'thisMonth' && <div>This Month&apos;s Content</div>}
-        {activeButton === 'adjustments' && <div>Adjustments Content</div>}
-      </div> */}
-      <div className='mt-8 px-8' >
+      <div className='mt-8 px-8'>
         <Card />
       </div>
     </div>

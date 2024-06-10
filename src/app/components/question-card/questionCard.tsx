@@ -1,9 +1,15 @@
+import Link from "next/link";
 
 export default function QuestionCard() {
+    // Example question title
+    const questionTitle = "How do I reverse a linked list to change the order of its elements?";
+
     return (
         <div className="w-full max-w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md">
             <div className="mb-2 text-lg font-medium text-gray-900">
-                How do I reverse a linked list to change the order of its elements?
+                <Link href="./questions/answer-question">
+                    {questionTitle}
+                </Link>
             </div>
             <div className="flex items-center mb-4">
                 <span className="px-2 py-1 mr-2 text-xs font-semibold text-blue-800 bg-blue-100 rounded">Python</span>
