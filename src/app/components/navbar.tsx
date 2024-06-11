@@ -35,13 +35,13 @@ export default function Navbar({ profileImage }: NavbarProps) {
         />
       </div>
       <div className="flex-grow ml-7">
-        <Link href="./dashboard" legacyBehavior>
+        <Link href="/dashboard" legacyBehavior>
           <a onClick={() => handleLinkClick('home')} className={getLinkClasses('home')}>
           <AiOutlineHome className="text-3xl flex-shrink-0" />
           <p className="pl-7 text-base">Dashboard</p>
         </a>
       </Link>
-      <Link href="./collections" legacyBehavior>
+      <Link href="/collections" legacyBehavior>
         <a onClick={() => handleLinkClick('collections')} className={getLinkClasses('collections')}>
           <RxComponent1 className="text-3xl flex-shrink-0" />
           <p className="pl-7 text-base">Collections</p>
