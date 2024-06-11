@@ -6,14 +6,14 @@ export default function QuestionCard() {
 
     return (
         <div className="w-full max-w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md">
-            <div className="mb-2 text-lg font-medium text-gray-900">
+            <div className="mb-2 text-lg font-medium text-blue-950">
                 <Link href="./questions/answer-question">
                     {questionTitle}
                 </Link>
             </div>
             <div className="flex items-center mb-4">
-                <span className="px-2 py-1 mr-2 text-xs font-semibold text-blue-800 bg-blue-100 rounded">Python</span>
-                <span className="px-2 py-1 text-xs font-semibold text-blue-800 bg-blue-100 rounded">Linked list</span>
+                <span className="px-2 py-1 mr-2 text-xs font-semibold text-indigo-500 bg-blue-100 rounded">Python</span>
+                <span className="px-2 py-1 text-xs font-semibold text-indigo-500 bg-blue-100 rounded">Linked list</span>
             </div>
             <div className="flex justify-between items-center text-gray-500">
                 <div className="flex items-center">
@@ -30,7 +30,7 @@ export default function QuestionCard() {
                 </div>
                 <div className="flex items-center">
                     <div className="w-8 h-8 rounded-full bg-gray-200 mr-2"></div>
-                    <span className="text-sm font-medium text-gray-900">Damon Salvatore</span>
+                    <span className="text-sm font-medium text-blue-950">Damon Salvatore</span>
                 </div>
             </div>
         </div>

@@ -36,16 +36,10 @@ export default function Navbar({ profileImage }: NavbarProps) {
         />
       </div>
       <div className="flex-grow ml-7">
-        <Link href="./home" legacyBehavior>
+        <Link href="./dashboard" legacyBehavior>
           <a onClick={() => handleLinkClick('home')} className={getLinkClasses('home')}>
           <AiOutlineHome className="text-3xl flex-shrink-0" />
-          <p className="pl-7 text-base">Home</p>
-        </a>
-      </Link>
-      <Link href="/questions" legacyBehavior>
-        <a onClick={() => handleLinkClick('questions')} className={getLinkClasses('questions')}>
-          <IoChatbubbleOutline className="text-3xl flex-shrink-0" />
-          <p className="pl-7 text-base">Questions</p>
+          <p className="pl-7 text-base">Dashboard</p>
         </a>
       </Link>
       <Link href="./collections" legacyBehavior>
