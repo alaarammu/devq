@@ -65,9 +65,11 @@ export default function AnswerQuestion() {
           </div>
         </div>
       )}
-      <button className="bg-red-400 text-white py-2 px-4 rounded hover:bg-red-300 mt-7">
-        Upload
-      </button>
+      <div className="flex pt-7 justify-center mt-auto mb-7">
+        <button className="bg-red-400 text-white py-2 px-4 rounded hover:bg-red-300">
+          Upload
+        </button>
+      </div>
     </div>
   );
 }
