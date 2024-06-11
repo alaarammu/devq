@@ -1,7 +1,8 @@
 "use client";
+import AnswerQuestion from "@/app/components/answer/answer";
 import { useState } from "react";
 
-export default function AnswerQuestion() {
+export default function QuestionAnswer() {
   // Example question title
   const questionTitle = "How do I reverse a linked list to change the order of its elements?";
 
@@ -29,7 +30,7 @@ export default function AnswerQuestion() {
   };
 
   return (
-    <div className="mt-9 mb-9 ml-11 mr-11">
+    <div className="mt-9 mb-9 ml-11 mr-11 ">
       <h1 className="text-2xl text-blue-950">
         {/* Render the question title */}
         {questionTitle}
