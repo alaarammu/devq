@@ -60,7 +60,7 @@ export default function Home() {
             </button>
           </div>
           <div className="mr-9 font-semibold flex-shrink-0">
-            <a className="bg-red-400 text-white py-3 px-5 rounded-md hover:bg-red-300" href="./ask-question">
+            <a className="bg-red-400 text-white py-3 px-5 rounded-md pt-5 pb-5 hover:bg-red-300" href="./ask-question ">
               Ask Question
             </a>
           </div>
