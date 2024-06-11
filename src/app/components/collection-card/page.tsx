@@ -1,5 +1,10 @@
 
-export default function Card() {
+interface CardProps {
+  name: string;
+  questionCount: number;
+}
+// export default function Card() {
+const CollectionCard: React.FC<CardProps> = ({ name, questionCount }) => {
 
   return (
     <div>
@@ -7,14 +12,17 @@ export default function Card() {
         <div className="text-center">
           <div className="my-2 p-2 border bg-indigo-100 rounded-md shadow-sm">
             <div>
-              <p className="text-sm">Python</p>
+              <p className="text-sm">{name}</p>
             </div>
           </div>
           <a href="#">
           </a>
-          <h5>Questions</h5>
+          <h5>Questions {questionCount}</h5>
         </div>
       </div>
     </div>
   )
 }
+
+
+export default CollectionCard;

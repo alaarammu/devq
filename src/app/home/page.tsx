@@ -1,10 +1,13 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HiOutlineAdjustments } from "react-icons/hi";
 import Card from '../components/question-card/questionCard';
+import { getAllQuestionByUserId } from '../../../services/questionServices/questionService';
+import useAuthStore from '../../../services/utils/authStore';
 
 export default function Home() {
   const [activeButton, setActiveButton] = useState('new');
+  const [questionDetails, setQuestionDetails] = useState<any>([]);
 
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
@@ -30,6 +33,16 @@ export default function Home() {
         return '';
     }
   };
+
+  useEffect(() => {
+    const getCompanyQuestion = async () => {
+      let companyId = useAuthStore.getState().user.company?.id
+      const result = await getAllQuestionByUserId(companyId);
+      setQuestionDetails(result.data)
+      console.log("data", result.data)
+    }
+    getCompanyQuestion()
+  }, [])
 
   return (
     <div className="w-full overflow-x-auto"> {/* Allow horizontal scroll on small screens */}
@@ -60,14 +73,16 @@ export default function Home() {
             </button>
           </div>
           <div className="mr-9 font-semibold flex-shrink-0">
-            <a className="bg-red-400 text-white py-3 px-5 rounded-md hover:bg-red-300" href="./ask-question">
+            <a className="bg-red-400 text-white py-3 px-5 rounded-md hover:bg-red-300" href="/questions/ask-question">
               Ask Question
             </a>
           </div>
         </div>
       </div>
       <div className='mt-8 px-8'>
-        <Card />
+        {questionDetails.length >= 0 && questionDetails.map((detail: any, index: number) => (
+          <Card key={index} questionTitle={detail.title} tags={detail.tags} user={detail.user} />
+        ))}
       </div>
     </div>
   );
