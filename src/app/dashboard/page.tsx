@@ -1,7 +1,7 @@
-"use client";
+"use client"; 
 import { useState } from "react";
 import { HiOutlineAdjustments } from "react-icons/hi";
-import Card from "../components/question-card/questionCard";
+import QuestionCard from "../components/question-card/questionCard";
 
 export default function Dashboard() {
   const [activeButton, setActiveButton] = useState("new");
@@ -92,7 +92,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="flex mt-8">
-        <Card />
+        <QuestionCard />
       </div>
     </div>
   );

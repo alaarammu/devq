@@ -1,7 +1,6 @@
 "use client";
 import { useState } from 'react';
 import { AiOutlineHome } from "react-icons/ai";
-import { IoChatbubbleOutline } from "react-icons/io5";
 import { RxComponent1 } from "react-icons/rx";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { PiMegaphoneSimpleLight } from "react-icons/pi";
@@ -39,13 +38,7 @@ export default function Navbar({ profileImage }: NavbarProps) {
         <Link href="./dashboard" legacyBehavior>
           <a onClick={() => handleLinkClick('home')} className={getLinkClasses('home')}>
           <AiOutlineHome className="text-3xl flex-shrink-0" />
-          <p className="pl-7 text-base">Home</p>
-        </a>
-      </Link>
-      <Link href="/questions" legacyBehavior>
-        <a onClick={() => handleLinkClick('questions')} className={getLinkClasses('questions')}>
-          <IoChatbubbleOutline className="text-3xl flex-shrink-0" />
-          <p className="pl-7 text-base">Questions</p>
+          <p className="pl-7 text-base">Dashboard</p>
         </a>
       </Link>
       <Link href="./collections" legacyBehavior>

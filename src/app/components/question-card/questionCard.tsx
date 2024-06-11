@@ -14,7 +14,6 @@ interface CardProps {
     user: User;
 }
 
-// export default function QuestionCard() {
 const QuestionCard: React.FC<CardProps> = ({ questionTitle, tags, user }) => {
 
     return (
