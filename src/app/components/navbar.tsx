@@ -36,7 +36,7 @@ export default function Navbar({ profileImage }: NavbarProps) {
         />
       </div>
       <div className="flex-grow ml-7">
-        <Link href="./home" legacyBehavior>
+        <Link href="/home" legacyBehavior>
           <a onClick={() => handleLinkClick('home')} className={getLinkClasses('home')}>
           <AiOutlineHome className="text-3xl flex-shrink-0" />
           <p className="pl-7 text-base">Home</p>
@@ -48,7 +48,7 @@ export default function Navbar({ profileImage }: NavbarProps) {
           <p className="pl-7 text-base">Questions</p>
         </a>
       </Link>
-      <Link href="./collections" legacyBehavior>
+      <Link href="/collections" legacyBehavior>
         <a onClick={() => handleLinkClick('collections')} className={getLinkClasses('collections')}>
           <RxComponent1 className="text-3xl flex-shrink-0" />
           <p className="pl-7 text-base">Collections</p>
@@ -60,13 +60,13 @@ export default function Navbar({ profileImage }: NavbarProps) {
           <p className="pl-7 text-base">Community</p>
         </a>
       </Link>
-      <Link href="./activity" legacyBehavior>
+      <Link href="/activity" legacyBehavior>
         <a onClick={() => handleLinkClick('activity')} className={getLinkClasses('activity')}>
           <PiMegaphoneSimpleLight className="text-3xl flex-shrink-0" />
           <p className="pl-7 text-base">Activity</p>
         </a>
       </Link>
-      <Link href="./settings" legacyBehavior>
+      <Link href="/settings" legacyBehavior>
         <a onClick={() => handleLinkClick('settings')} className={getLinkClasses('settings')}>
           <IoSettingsOutline className="text-3xl flex-shrink-0" />
           <p className="pl-7 text-base">Settings</p>

@@ -1,13 +1,16 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HiArrowsUpDown } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io';
 import Card from '../components/collection-card/page';
+import { getAllTagsByCompanyId } from '../../../services/tagServices/tagService';
+import useAuthStore from '../../../services/utils/authStore';
 
 const CARDS_PER_PAGE = 20; // Define how many cards to display per page
 
 export default function Collections() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [tags, setTags] = useState<any>([]);
   const totalCards = 20; // Define the total number of cards
   const totalPages = Math.ceil(totalCards / CARDS_PER_PAGE);
 
@@ -23,21 +26,34 @@ export default function Collections() {
     setCurrentPage(page);
   };
 
+  useEffect(() => {
+    const getCompanyQuestion = async () => {
+      let companyId = useAuthStore.getState().user.company?.id
+      const result = await getAllTagsByCompanyId(companyId);
+      setTags(result.data)
+      console.log("data", result.data)
+    }
+    getCompanyQuestion()
+  }, [])
+
   return (
     <div className="m-11">
       <h1 className="text-2xl font-semibold mb-7">All Collections</h1>
       <div className="flex mb-7">
-        <h1 className="flex mr-3 text-indigo-400">Questions</h1>
+        <h1 className="flex mr-3 text-indigo-400">Collections</h1>
         <HiArrowsUpDown className="text-xl text-indigo-400" />
-        <h1 className="flex mr-3 text-indigo-400 ml-5">Today</h1>
-        <IoIosArrowDown className="text-xl text-indigo-400" />
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {Array.from({ length: totalCards }, (_, index) => (
-          <Card key={index} />
-        )).slice((currentPage - 1) * CARDS_PER_PAGE, currentPage * CARDS_PER_PAGE)}
+        {tags.length > 0 && tags.map((tag: any, index: number) => (
+          <Card
+            key={index}
+            name={tag.name}
+            questionCount={tag.questions.length}
+          />
+        ))
+        }
       </div>
-      {totalPages > 1 && (
+      {/* {totalPages > 1 && (
         <div className="flex justify-center items-center mt-8">
           <button
             onClick={handlePrevious}
@@ -63,7 +79,7 @@ export default function Collections() {
             Next
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
