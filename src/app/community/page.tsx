@@ -1,14 +1,24 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaExchangeAlt } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Card from '../components/user-card/userCard';
 import Modal from '../components/modals/inviteUserModal';
+import { getAllUsersByCompanyId } from '../../../services/companyServices/companyService';
+import useAuthStore from '../../../services/utils/authStore';
+
+interface User {
+  email: string;
+  id: number;
+  name: string;
+  role: number;
+}
 
 function Community() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sorted, setSorted] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [cardsData, setCardsData] = useState<User[]>([]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -28,18 +38,6 @@ function Community() {
     setShowModal(false);
   };
 
-  const cardsData = [
-    { name: 'Tabi Bell', email: 'tabibell244@gmail.com', role: 'Senior developer' },
-    { name: 'Damon Salvatore', email: 'damon12@gmail.com', role: 'Web developer' },
-    { name: 'Robert Pattinson', email: 'rpattinson00@gmail.com', role: 'Junior web developer' },
-    { name: 'Stefan Salvatore', email: 'stef@gmail.com', role: 'Web developer' },
-    { name: 'Tony Moly', email: 'tonymoly@gmail.com', role: 'QA Lead' },
-    { name: 'Tabi Bell', email: 'tabibell244@gmail.com', role: 'Senior developer' },
-    { name: 'Damon Salvatore', email: 'damon12@gmail.com', role: 'Web developer' },
-    { name: 'Robert Pattinson', email: 'rpattinson00@gmail.com', role: 'Junior web developer' },
-    { name: 'Stefan Salvatore', email: 'stef@gmail.com', role: 'Web developer' },
-    { name: 'Tony Moly', email: 'tonymoly@gmail.com', role: 'QA Lead' }
-  ];
 
   const handleSort = () => {
     setSorted(!sorted);
@@ -48,6 +46,16 @@ function Community() {
   const filteredCards = cardsData
     .filter(card => card.name.toLowerCase().includes(searchTerm.toLowerCase()))
     .sort((a, b) => sorted ? a.name.localeCompare(b.name) : 0);
+
+  useEffect(() => {
+    const getCompanyQuestion = async () => {
+      let companyId = useAuthStore.getState().user.company?.id
+      const result = await getAllUsersByCompanyId(companyId);
+      setCardsData(result.data.users)
+      console.log("data", result.data)
+    }
+    getCompanyQuestion()
+  }, [])
 
   return (
     <div className="mt-9 ml-11 mr-11">
