@@ -130,7 +130,7 @@ const Login = () => {
         const response = await getUserDetails({email});
         if(response){
           useAuthStore.getState().setUser(response);
-          router.push('home');
+          router.push('dashboard');
         }
         
       }

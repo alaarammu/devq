@@ -30,7 +30,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useAuthStore from './authStore';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // Create a custom Axios instance
 const apiClient = axios.create({
