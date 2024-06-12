@@ -5,6 +5,8 @@ import { IoIosArrowDown } from 'react-icons/io';
 import Card from '../components/collection-card/page';
 import { getAllTagsByCompanyId } from '../../../services/tagServices/tagService';
 import useAuthStore from '../../../services/utils/authStore';
+import { FaExchangeAlt } from "react-icons/fa";
+
 
 const CARDS_PER_PAGE = 20; // Define how many cards to display per page
 
@@ -12,6 +14,7 @@ export default function Collections() {
   const [currentPage, setCurrentPage] = useState(1);
   const [tags, setTags] = useState<any>([]);
   const totalCards = 20; // Define the total number of cards
+  const [sorted, setSorted] = useState(false);
   const totalPages = Math.ceil(totalCards / CARDS_PER_PAGE);
 
   const handlePrevious = () => {
@@ -24,6 +27,10 @@ export default function Collections() {
 
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleSort = () => {
+    setSorted(!sorted);
   };
 
   useEffect(() => {
@@ -40,8 +47,12 @@ export default function Collections() {
     <div className="m-11">
       <h1 className="text-2xl font-semibold mb-7">All Collections</h1>
       <div className="flex mb-7">
-        <h1 className="flex mr-3 text-indigo-400">Collections</h1>
-        <HiArrowsUpDown className="text-xl text-indigo-400" />
+        <p className="w-fit text-indigo-400 mr-2">
+          Questions
+        </p>
+        <FaExchangeAlt className="mt-1 text-indigo-400 transform rotate-90 cursor-pointer"
+          onClick={handleSort}
+          />
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {tags.length > 0 && tags.map((tag: any, index: number) => (

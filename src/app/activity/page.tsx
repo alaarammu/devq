@@ -1,5 +1,9 @@
 "use client";
 import { useState } from "react";
+import QuestionPosted from "../components/activity-cards/question-posted";
+import NewMember from "../components/activity-cards/new-member";
+import MemberQuestion from "../components/activity-cards/member-question";
+import UserUpdates from "../components/activity-cards/user-updates";
 
 export default function Activity() {
 
@@ -18,7 +22,7 @@ export default function Activity() {
 
   return (
     <div>
-      <div className="mt-9 px-3 ml-9">
+      <div className="mt-9 px-3 ml-9 mr-9">
         <div className="text-2xl font-semibold mb-3 ">
           Your Activity
         </div>
@@ -37,7 +41,12 @@ export default function Activity() {
             </button>
 
           </div>
-          
+        </div>
+        <div className="mt-7 space-y-5">
+          <QuestionPosted />
+          <NewMember />
+          <MemberQuestion />
+          <UserUpdates />
         </div>
       </div>
     </div>

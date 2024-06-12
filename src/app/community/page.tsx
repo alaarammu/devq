@@ -62,9 +62,9 @@ function Community() {
       <p className="text-2xl font-semibold">All members</p>
       <div className='mt-3 flex flex-row justify-between w-full flex-wrap'>
         <div className='flex flex-row gap-2 items-center flex-wrap'>
-          <p className="w-fit text-purple-600">Name</p>
+          <p className="w-fit text-indigo-400">Name</p>
           <FaExchangeAlt
-            className="text-purple-600 transform rotate-90 cursor-pointer"
+            className="text-indigo-400 transform rotate-90 cursor-pointer mr-3"
             onClick={handleSort}
           />
           <div className="relative flex-grow max-w-sm min-w-[200px]">
