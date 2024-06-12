@@ -42,7 +42,11 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       'align', 'undo', 'redo', '|',
       'hr', 'eraser', 'copyformat', '|',
       'fullsize', 'selectall', 'print', 'source'
-    ]
+    ],
+    allowResizeX: false,
+    allowResizeY: false,
+    allowHTML: true,  // Allows HTML to be inserted
+    cleanHTML: false  // Disables the cleaning of HTML when pasting or loading content
   }), [readonly, placeholder]);
 
   useEffect(() => {

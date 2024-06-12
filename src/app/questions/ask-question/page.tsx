@@ -5,6 +5,9 @@ import { FaBold, FaItalic, FaUnderline, FaCode, FaPaperclip, FaImage, FaRedo } f
 import Select, { MultiValue } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import RichTextEditor from '@/app/components/text-area-editor/textAreaEditor';
+import { createQuestion } from '../../../../services/questionServices/questionService';
+import useAuthStore from '../../../../services/utils/authStore';
+
 
 type OptionType = {
   value: string;
@@ -39,6 +42,8 @@ export default function AskQuestion() {
   const [content, setContent] = useState<string>('');
   const [placeholder, setPlaceholder] = useState<string>('Start typing...');
   const [readonly, setReadonly] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
+
   const handleReset = () => {
     if (editorRef.current) {
       editorRef.current.innerHTML = '';
@@ -60,6 +65,20 @@ export default function AskQuestion() {
     setIsCodeSnippetVisible(!isCodeSnippetVisible); // Toggle the visibility of code snippet
   };
 
+  const submitHandler = async() => {
+    let userId = useAuthStore.getState().user.id;
+    const tagsValues = selectedTags.map(tag => tag.value);
+    let data: any = {
+      user_id: userId,
+      tags: tagsValues,
+      status: true,
+      description: content,
+      title: title
+    }
+    let response = await createQuestion(data);
+    console.log("data, ",data)
+  };
+
   return (
     <div className="mt-9 ml-11 mr-11 mb-11">
       <p className="text-2xl font-semibold">
@@ -70,7 +89,10 @@ export default function AskQuestion() {
         <input
           type="text"
           placeholder="Title"
+          value={title}
+          name="title"
           className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+          onChange={(e) => setTitle(e.target.value)}
         />
       </div>
       <div className="mt-8">
@@ -86,11 +108,6 @@ export default function AskQuestion() {
       <div>
       <div dangerouslySetInnerHTML={{ __html: description }} />
       </div>
-      {isCodeSnippetVisible && (
-        <div className="mt-8">
-          <CodeSnippet />
-        </div>
-      )}
       <div className="mt-8">
         <h2 className="text-xl font-semibold">Tags</h2>
         <Select
@@ -106,6 +123,7 @@ export default function AskQuestion() {
       <div className="mt-8 flex justify-center">
         <button
           className="bg-red-400 text-white py-2 px-4 rounded hover:bg-red-300"
+          onClick={submitHandler}
         >
           Save and Continue
         </button>

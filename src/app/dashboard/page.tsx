@@ -35,15 +35,15 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const getCompanyQuestion = async () => {
-      let companyId = useAuthStore.getState().user.company?.id
-      const result = await getAllQuestionByUserId(companyId);
-      setQuestionDetails(result.data)
-      console.log("data", result.data)
-    }
     getCompanyQuestion()
   }, [])
-
+  
+  const getCompanyQuestion = async () => {
+    let companyId = useAuthStore.getState().user.company?.id
+    const result = await getAllQuestionByUserId(companyId);
+    setQuestionDetails(result.data)
+    console.log("data", result.data)
+  }
   return (
     <div className="w-full overflow-x-auto"> {/* Allow horizontal scroll on small screens */}
       <div className="mt-9 px-3 ml-9">
@@ -81,7 +81,7 @@ export default function Home() {
       </div>
       <div className='mt-8 px-8'>
         {questionDetails.length >= 0 && questionDetails.map((detail: any, index: number) => (
-          <Card key={index} questionTitle={detail.title} tags={detail.tags} user={detail.user} />
+          <Card key={index} questionId={detail.id} questionTitle={detail.title} tags={detail.tags} user={detail.user} />
         ))}
       </div>
     </div>
