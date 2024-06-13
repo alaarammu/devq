@@ -36,7 +36,7 @@ const options: OptionType[] = [
   { value: 'Cybersecurity Analyst', label: 'Cybersecurity Analyst' }
 ];
 
-const validationSchema = yup.o3bject().shape({
+const validationSchema = yup.object().shape({
   email: yup.string().email('Invalid email format').required('Email is required'),
   position: yup.object().shape({
     value: yup.string().required('Position is required'),

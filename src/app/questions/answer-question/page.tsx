@@ -1,5 +1,4 @@
 "use client";
-import AnswerQuestion from "@/app/components/answer/answer";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import useAuthStore from "../../../../services/utils/authStore";
