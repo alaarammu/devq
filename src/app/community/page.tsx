@@ -38,7 +38,6 @@ function Community() {
     setShowModal(false);
   };
 
-
   const handleSort = () => {
     setSorted(!sorted);
   };
@@ -89,7 +88,7 @@ function Community() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pr-7 mt-4">
         {filteredCards.map((card, index) => (
-          <Card key={index} name={card.name} email={card.email} role={card.role} />
+          <Card key={index} name={card.name} email={card.email} role={card.role.toString()} />
         ))}
       </div>
       <Modal show={showModal} onClose={handleCloseModal} />
