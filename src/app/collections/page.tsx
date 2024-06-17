@@ -1,96 +1,100 @@
-"use client";
+"use client"
 import { useState, useEffect } from 'react';
-import { HiArrowsUpDown } from 'react-icons/hi2';
-import { IoIosArrowDown } from 'react-icons/io';
+import { FaExchangeAlt } from 'react-icons/fa';
 import Card from '../components/collection-card/page';
 import { getAllTagsByCompanyId } from '../../../services/tagServices/tagService';
 import useAuthStore from '../../../services/utils/authStore';
-import { FaExchangeAlt } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
 
-
-const CARDS_PER_PAGE = 20; // Define how many cards to display per page
+const CARDS_PER_PAGE = 15; // Define how many cards to display per page
 
 export default function Collections() {
   const [currentPage, setCurrentPage] = useState(1);
   const [tags, setTags] = useState<any>([]);
-  const totalCards = 20; // Define the total number of cards
-  const [sorted, setSorted] = useState(false);
-  const totalPages = Math.ceil(totalCards / CARDS_PER_PAGE);
-
-  const handlePrevious = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const handleNext = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  };
-
-  const handlePageClick = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const handleSort = () => {
-    setSorted(!sorted);
-  };
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const router = useRouter();
 
   useEffect(() => {
-    const getCompanyQuestion = async () => {
-      let companyId = useAuthStore.getState().user.company?.id
-      const result = await getAllTagsByCompanyId(companyId);
-      setTags(result.data)
-      console.log("data", result.data)
-    }
-    getCompanyQuestion()
-  }, [])
+    const getCompanyTags = async () => {
+      try {
+        const companyId = useAuthStore.getState().user.company?.id;
+        const result = await getAllTagsByCompanyId(companyId);
+        console.log("data:", result.data)
+        let sortedTags: any = [...result.data]; 
+
+        // Filter out tags with questionCount <= 0
+        sortedTags = sortedTags.filter(tag => tag.questions.length > 0);
+
+        // Sort by name based on sortDirection
+        sortedTags.sort((a: any, b: any) => {
+          if (sortDirection === 'desc') {
+            return a.name.localeCompare(b.name);
+          } else {
+            return b.name.localeCompare(a.name);
+          }
+        });
+
+        setTags(sortedTags);
+      } catch (error) {
+        console.error('Error fetching tags: ', error);
+      }
+    };
+
+    getCompanyTags();
+  }, [sortDirection]);
+
+  const handleSort = () => {
+    // Toggle between 'asc' and 'desc' when sorting
+    setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc');
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const paginatedTags = tags.slice((currentPage - 1) * CARDS_PER_PAGE, currentPage * CARDS_PER_PAGE);
+
+  const handleTagClick = (tagName: string) => {
+    router.push(`/collections/questions?tagName=${tagName}`);
+  };
 
   return (
     <div className="m-11">
       <h1 className="text-2xl font-semibold mb-7">All Collections</h1>
       <div className="flex mb-7">
-        <p className="w-fit text-indigo-400 mr-2">
-          Questions
-        </p>
-        <FaExchangeAlt className="mt-1 text-indigo-400 transform rotate-90 cursor-pointer"
+        <p className="w-fit text-indigo-400 mr-2">Collections</p>
+        <FaExchangeAlt
+          className={`mt-1 text-${sortDirection === 'asc' ? 'blue-400' : 'indigo-400'} transform rotate-90 cursor-pointer`}
           onClick={handleSort}
-          />
+        />
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {tags.length > 0 && tags.map((tag: any, index: number) => (
-          <Card
-            key={index}
-            name={tag.name}
-            questionCount={tag.questions.length}
-          />
-        ))
-        }
+        {paginatedTags.length > 0 ? (
+          paginatedTags.map((tag: any, index: number) => (
+            <Card 
+            key={index} 
+            name={tag.name} 
+            questionCount={tag.questions.length} 
+            onClick={() => handleTagClick(tag.name)} 
+            />
+          ))
+        ) : (
+          <div className="text-gray-500">No collections to display.</div>
+        )}
       </div>
-      {/* {totalPages > 1 && (
-        <div className="flex justify-center items-center mt-8">
-          <button
-            onClick={handlePrevious}
-            disabled={currentPage === 1}
-            className="px-4 py-2 bg-white text-gray-800 rounded-l hover:bg-indigo-400 disabled:bg-white"
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }, (_, index) => (
+      {tags.length > CARDS_PER_PAGE && (
+        <div className="flex justify-center mt-4">
+          {[...Array(Math.ceil(tags.length / CARDS_PER_PAGE))].map((_, index) => (
             <button
               key={index}
-              onClick={() => handlePageClick(index + 1)}
-              className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-indigo-400 text-white' : 'bg-indigo-400 text-white'} hover:bg-indigo-300`}
+              onClick={() => handlePageChange(index + 1)}
+              className={`mx-1 px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-indigo-400 text-white' : 'bg-white border border-indigo-400 text-indigo-400'}`}
             >
               {index + 1}
             </button>
           ))}
-          <button
-            onClick={handleNext}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-white text-indigo-400 rounded-r hover:bg-white disabled:bg-gray-200"
-          >
-            Next
-          </button>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

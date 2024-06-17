@@ -1,14 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiCamera } from "react-icons/ci";
 import Image from "next/image";
+import useAuthStore from '../../../services/utils/authStore';
+import { getUserDetails } from "../../../services/authServices/localAuthService";
+
 
 export default function MyProfile() {
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer | null>("");
-  const [fullName, setFullName] = useState("John Doe");
-  const [email, setEmail] = useState("john.doe@example.com");
+  const [fullName, setFullName] = useState<any>("");
+  const [email, setEmail] = useState<any>("");
   const [role, setRole] = useState("User");
   const [isEditable, setIsEditable] = useState(false);
+  const [UserDetails, setUserDetails] = useState(false);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -26,6 +30,21 @@ export default function MyProfile() {
   const toggleEdit = () => {
     setIsEditable(!isEditable);
   };
+  useEffect(() => {
+    getCompanyQuestion();
+  }, []);
+
+  const getCompanyQuestion = async () => {
+    let email: any = useAuthStore.getState().user.email;
+    const result = await getUserDetails({ email });
+    if (result) {
+      setUserDetails(result);
+      setFullName(result.name);
+      setEmail(result.email)
+    }
+    console.log("data", result);
+  };
+
 
   return (
     <div className="">
@@ -78,9 +97,8 @@ export default function MyProfile() {
           <input
             type="text"
             id="fullName"
-            className={`mt-1 p-2 border border-gray-400 bg-indigo-100 rounded-md w-full ${
-              isEditable ? "" : "cursor-not-allowed bg-gray-100"
-            }`}
+            className={`mt-1 p-2 border border-gray-400 bg-indigo-100 rounded-md w-full ${isEditable ? "" : "cursor-not-allowed bg-gray-100"
+              }`}
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             disabled={!isEditable}
@@ -96,9 +114,8 @@ export default function MyProfile() {
           <input
             type="email"
             id="email"
-            className={`mt-1 p-2 border border-gray-400 bg-indigo-100 rounded-md w-full ${
-              isEditable ? "" : "cursor-not-allowed bg-gray-100"
-            }`}
+            className={`mt-1 p-2 border border-gray-400 bg-indigo-100 rounded-md w-full ${isEditable ? "" : "cursor-not-allowed bg-gray-100"
+              }`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={!isEditable}
@@ -114,26 +131,29 @@ export default function MyProfile() {
           <input
             type="text"
             id="role"
-            className={`bg-indigo-100 mt-1 p-2 border border-gray-400 rounded-md w-full ${
-              isEditable ? "" : "cursor-not-allowed bg-gray-100"
-            }`}
+            className={`bg-indigo-100 mt-1 p-2 border border-gray-400 rounded-md w-full ${isEditable ? "" : "cursor-not-allowed bg-gray-100"
+              }`}
             value={role}
             onChange={(e) => setRole(e.target.value)}
             disabled={!isEditable}
           />
         </div>
         <div className="mt-9">
-          <button
-            className={`bg-red-400 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-300 ${
-              isEditable ? "" : "cursor-not-allowed"
-            }`}
-            disabled={!isEditable}
-          >
-            Update Profile
-          </button>
-          <button className="pl-5 text-sm text-red-400 font-semibold">
-            Change Password?
-          </button>
+          {isEditable &&
+            <>
+              <button
+                className={`bg-red-400 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-300 ${isEditable ? "" : "cursor-not-allowed"
+                  }`}
+                disabled={!isEditable}
+              >
+                Update Profile
+              </button>
+              <button className="pl-5 text-sm text-red-400 font-semibold">
+                Change Password?
+              </button>
+            </>
+          }
+
         </div>
       </div>
     </div>

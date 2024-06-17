@@ -3,9 +3,18 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { PiMegaphoneSimpleLight } from "react-icons/pi";
+import useAuthStore from "../../../services/utils/authStore";
+import { useRouter } from "next/navigation";
+
 
 export default function Header() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const router = useRouter();
+  
+  const handleLogout = () => {
+    useAuthStore.getState().logoutAccount();
+    router.push(`/login`);
+  };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -39,15 +48,16 @@ export default function Header() {
               <div className="flex flex-col items-center">
                 <Link href="/my-profile" passHref>
                   <button className="px-4 py-2 text-blue-950  hover:text-red-400" >
-                    My Profile 
+                    My Profile
                   </button>
                 </Link>
                 <hr className="border-gray-500" />
-                <Link href="/" passHref>
-                  <button className="px-4 py-2 text-blue-950  hover:text-red-400">
-                    Logout
-                  </button>
-                  </Link>
+                <button
+                  className="px-4 py-2 text-blue-950  hover:text-red-400"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               </div>
             </div>
           )}

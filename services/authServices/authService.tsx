@@ -2,7 +2,8 @@ import axios from 'axios';
 import { getAccessToken } from '../utils/getAccessToken';
 import { UserData } from '../../types/auth';
 import useAuthStore from '../utils/authStore'; // import useAuthStore
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const loginWithEmailPassword = async (email: any, password: any) => {
     try {
@@ -33,10 +34,13 @@ const loginWithEmailPassword = async (email: any, password: any) => {
         return authResult;
     } catch (error: any) {
         if (error.response) {
+            toast.error(error.response.data.error_description);
             console.error('Auth0 login error:', error.response.data);
         } else if (error.request) {
+            toast.error(error.request);
             console.error('No response received:', error.request);
         } else {
+            toast.error(error.message);
             console.error('Error setting up request:', error.message);
         }
         throw error;
@@ -46,23 +50,78 @@ const loginWithEmailPassword = async (email: any, password: any) => {
 const createUserAndAssignRole = async (userData: UserData, roleId: string) => {
     const token = await getAccessToken();
     console.log("token", token);
-    console.log("token", userData);
+    console.log("userData", userData);
+
     try {
-        // Create the user
-        const response = await axios.post(`https://${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users`, userData, {
+        // Step 1: Create the user
+        const userResponse = await axios.post(`https://${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users`, userData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });
 
-        console.log('User created:', response.data);
+        let result: any = loginWithEmailPassword(userData.email, userData.password)
 
-        return response.data;
+        if (result) {
+            const userId = userResponse.data.user_id;
+
+
+            await axios.post(`https://${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users/${userId}/roles`,
+                { roles: [roleId] }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('User created:', roleId);
+        }
+        else {
+            toast.error("Access token is not available after user creation.");
+            throw new Error("Access token is not available after user creation.");
+        }
+
+        return result;
     } catch (error: any) {
+        toast.error(error.response.data.message);
         console.error('Error creating user or assigning role:', error.response ? error.response.data : error.message);
         throw error;
     }
 };
+const createNewUserAndAssignRole = async (userData: UserData, roleId: string) => {
+    const token = await getAccessToken();
+    console.log("token", token);
+    console.log("userData", userData);
 
-export { loginWithEmailPassword, createUserAndAssignRole };
+    try {
+        // Step 1: Create the user
+        const userResponse = await axios.post(`https://${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users`, userData, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+
+        const userId = userResponse.data.user_id;
+
+
+        const result = await axios.post(`https://${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users/${userId}/roles`,
+            { roles: [roleId] }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log('User created:', roleId);
+
+
+
+        return result;
+    } catch (error: any) {
+        toast.error(error.response.data.message);
+        console.error('Error creating user or assigning role:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+export { loginWithEmailPassword, createUserAndAssignRole, createNewUserAndAssignRole };

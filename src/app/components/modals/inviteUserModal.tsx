@@ -4,6 +4,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { createNewUserAndAssignRole } from '../../../../services/authServices/authService';
+import { createNewUser } from '../../../../services/authServices/localAuthService';
+import useAuthStore from '../../../../services/utils/authStore';
+import { useRouter } from 'next/navigation';
 
 interface ModalProps {
   show: boolean;
@@ -17,7 +21,7 @@ type OptionType = {
 
 const animatedComponents = makeAnimated();
 
-const options: OptionType[] = [
+const positionOptions: OptionType[] = [
   { value: 'Developer', label: 'Developer' },
   { value: 'Senior Developer', label: 'Senior Developer' },
   { value: 'Software Engineer', label: 'Software Engineer' },
@@ -36,12 +40,41 @@ const options: OptionType[] = [
   { value: 'Cybersecurity Analyst', label: 'Cybersecurity Analyst' }
 ];
 
+const generateStrongPassword = (length = 9) => {
+  const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerCase = 'abcdefghijklmnopqrstuvwxyz';
+  const numbers = '0123456789';
+  const specialChars = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+  const allChars = upperCase + lowerCase + numbers + specialChars;
+
+  let password = '';
+  password += upperCase[Math.floor(Math.random() * upperCase.length)];
+  password += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+  password += numbers[Math.floor(Math.random() * numbers.length)];
+  password += specialChars[Math.floor(Math.random() * specialChars.length)];
+
+  for (let i = password.length; i < length; i++) {
+    password += allChars[Math.floor(Math.random() * allChars.length)];
+  }
+
+  return password.split('').sort(() => 0.5 - Math.random()).join('');
+};
+
+const roleOptions: OptionType[] = [
+  { value: 'Admin', label: 'Admin' },
+  { value: 'Recruiter', label: 'Recruiter' }
+];
+
 const validationSchema = yup.object().shape({
   email: yup.string().email('Invalid email format').required('Email is required'),
   position: yup.object().shape({
     value: yup.string().required('Position is required'),
     label: yup.string().required('Position is required')
-  }).nullable().required('Position is required')
+  }).nullable().required('Position is required'),
+  role: yup.object().shape({
+    value: yup.string().required('Role is required'),
+    label: yup.string().required('Role is required')
+  }).nullable().required('Role is required')
 });
 
 const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
@@ -49,13 +82,50 @@ const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
     resolver: yupResolver(validationSchema)
   });
 
-  const onSubmit = (data: any) => {
+
+  const onSubmit = async (data: any) => {
+    let roleId: any;
+
+    let newPassword: any = generateStrongPassword()
     console.log(data);
+    const userData = {
+      email: data.email,
+      password: newPassword,
+      connection: "Username-Password-Authentication",
+      email_verified: true
+    };
+    if (data.role.value == "Recruiter") {
+      roleId = process.env.NEXT_PUBLIC_RECRUITER_ROLE_ID
+    }
+    if (data.role.value == "Admin") {
+      roleId = process.env.NEXT_PUBLIC_ADMIN_ROLE_ID
+    }
+    let response = await createNewUserAndAssignRole(userData, roleId)
+    if (response) {
+      let companyId: any = useAuthStore.getState().user?.company?.id;
+      const name = data.email.split('@')[0];
+      let role: any;
+      if (data.role.value == "Recruiter") {
+        role = 1
+      }
+      if (data.role.value == "Admin") {
+        role = 0
+      }
+
+      const position = data.position.value;
+
+      const response: any = await createNewUser({ name: name, email: data.email, role: role, company_id: companyId, position: position, password: newPassword});
+
+      if(response){ 
+        reset({ email: '', position: null, role: null });
+        onClose();
+      }
+    }
     // Handle form submission
   };
 
   const handleClose = () => {
-    reset({ email: '', position: null });
+    reset({ email: '', position: null, role: null });
     onClose();
   };
 
@@ -98,7 +168,7 @@ const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
               render={({ field }) => (
                 <Select
                   components={animatedComponents}
-                  options={options}
+                  options={positionOptions}
                   placeholder="Select a position"
                   className="mb-4"
                   {...field}
@@ -106,6 +176,23 @@ const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
               )}
             />
             {errors.position && <p className="text-red-500 text-sm mt-1">{errors.position?.value?.message}</p>}
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Role</label>
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  components={animatedComponents}
+                  options={roleOptions}
+                  placeholder="Select a role"
+                  className="mb-4"
+                  {...field}
+                />
+              )}
+            />
+            {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role?.value?.message}</p>}
           </div>
           <button className="bg-purple-600 text-white py-2 px-4 rounded-[8px] w-full hover:bg-purple-700" type="submit">
             Send invitation

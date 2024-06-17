@@ -7,6 +7,7 @@ import makeAnimated from 'react-select/animated';
 import RichTextEditor from '@/app/components/text-area-editor/textAreaEditor';
 import { createQuestion } from '../../../../services/questionServices/questionService';
 import useAuthStore from '../../../../services/utils/authStore';
+import { useRouter } from "next/navigation";
 
 
 type OptionType = {
@@ -23,18 +24,27 @@ const options: OptionType[] = [
   { value: 'JavaScript', label: 'JavaScript' },
   { value: 'TypeScript', label: 'TypeScript' },
   { value: 'Node.js', label: 'Node' },
-  { value: 'Nest.js', label: 'Nest js' },
+  { value: 'Nest.js', label: 'Nest.js' },
   { value: 'NEXT.js', label: 'NEXT.js' },
   { value: 'Vue', label: 'Vue' },
   { value: 'Angular', label: 'Angular' },
   { value: 'Express.js', label: 'Express.js' },
   { value: 'Wordpress', label: 'Wordpress' },
   { value: 'React', label: 'React' },
+  { value: 'Django', label: 'Django' }, 
+  { value: 'Ruby on Rails', label: 'Ruby on Rails' }, 
+  { value: 'Swift', label: 'Swift' }, 
+  { value: 'PHP', label: 'PHP' },
+  { value: 'MongoDB', label: 'MongoDB' }, 
+  { value: 'GraphQL', label: 'GraphQL' }, 
+  { value: 'Redux', label: 'Redux' },
+  { value: 'Sass', label: 'Sass' }, 
 ];
 
 const animatedComponents = makeAnimated();
 
 export default function AskQuestion() {
+  const router = useRouter();
   const [description, setDescription] = useState('');
   const [selectedTags, setSelectedTags] = useState<MultiValue<OptionType>>([]);
   const [isCodeSnippetVisible, setIsCodeSnippetVisible] = useState(false); // State to toggle code snippet visibility
@@ -43,6 +53,9 @@ export default function AskQuestion() {
   const [placeholder, setPlaceholder] = useState<string>('Start typing...');
   const [readonly, setReadonly] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
+
+
+
 
   const handleReset = () => {
     if (editorRef.current) {
@@ -76,7 +89,11 @@ export default function AskQuestion() {
       title: title
     }
     let response = await createQuestion(data);
-    console.log("data, ",data)
+    console.log("data, ",response.data)
+    if(response){
+      router.push(`/questions/answer-question?id=${response.data.id}`);
+    }
+    
   };
 
   return (

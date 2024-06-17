@@ -9,3 +9,15 @@ export const getAllTagsByCompanyId = async (companyId: any) => {
         throw error;
     }
 };
+
+
+
+export const getQuestionsByTagNameAndCompany = async (companyId: any,tagName: any) => {
+    try {
+        const response = await apiClient.get(`/tag/by-name/${tagName}/company/${companyId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        throw error;
+    }
+};

@@ -13,6 +13,10 @@ interface AnswerData {
     user_id: string;
 }
 
+interface DeleteAnswerData {
+    id: string;
+}
+
 export const createQuestion = async (questionData: QuestionData) => {
     try {
         const response = await apiClient.post('/question', questionData);
@@ -47,6 +51,36 @@ export const getQuestionById = async (questionId: any) => {
 export const createAnswer = async (answerData: AnswerData) => {
     try {
         const response = await apiClient.post('/answer', answerData);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating answer:', error);
+        throw error;
+    }
+};
+
+export const deleteAnswerById = async (deleteAnswerID: any) => {
+    try {
+        const response = await apiClient.delete(`/answer/${deleteAnswerID}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating answer:', error);
+        throw error;
+    }
+};
+
+export const likeAQuestion = async (userId: any, questionId: any) => {
+    try {
+        const response = await apiClient.post(`/question-like/${userId}/${questionId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating answer:', error);
+        throw error;
+    }
+};
+
+export const unlikeAQuestion = async (userId: any, questionId: any) => {
+    try {
+        const response = await apiClient.delete(`/question-like/${userId}/${questionId}`);
         return response.data;
     } catch (error) {
         console.error('Error creating answer:', error);
