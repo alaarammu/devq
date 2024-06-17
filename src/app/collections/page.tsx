@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { FaExchangeAlt } from 'react-icons/fa';
-import Card from '../components/collection-card/page';
+import CollectionCard from '../components/collection-card/collectionCard';
 import { getAllTagsByCompanyId } from '../../../services/tagServices/tagService';
 import useAuthStore from '../../../services/utils/authStore';
 import { useRouter } from 'next/navigation';
@@ -20,10 +20,10 @@ export default function Collections() {
         const companyId = useAuthStore.getState().user.company?.id;
         const result = await getAllTagsByCompanyId(companyId);
         console.log("data:", result.data)
-        let sortedTags: any = [...result.data]; 
+        let sortedTags: any = [...result.data];
 
         // Filter out tags with questionCount <= 0
-        sortedTags = sortedTags.filter(tag => tag.questions.length > 0);
+        sortedTags = sortedTags.filter((tag: { questions: string | any[]; }) => tag.questions.length > 0);
 
         // Sort by name based on sortDirection
         sortedTags.sort((a: any, b: any) => {
@@ -71,12 +71,14 @@ export default function Collections() {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {paginatedTags.length > 0 ? (
           paginatedTags.map((tag: any, index: number) => (
-            <Card 
-            key={index} 
-            name={tag.name} 
-            questionCount={tag.questions.length} 
-            onClick={() => handleTagClick(tag.name)} 
-            />
+            <div key={index}>
+              <CollectionCard
+                tagName={tag.name}
+                questionCount={tag.questions.length}
+                onHandleClick={() => handleTagClick(tag.name)}
+              />
+            </div>
+
           ))
         ) : (
           <div className="text-gray-500">No collections to display.</div>

@@ -109,15 +109,15 @@ export default function Home() {
     const now = new Date();
     switch (activeButton) {
       case 'today':
-        return questionDetails.filter(q => new Date(q.createdAt).toDateString() === now.toDateString());
+        return questionDetails.filter((q: { createdAt: string | number | Date; }) => new Date(q.createdAt).toDateString() === now.toDateString());
       case 'thisWeek':
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(now.getDate() - 7);
-        return questionDetails.filter(q => new Date(q.createdAt) >= oneWeekAgo);
+        return questionDetails.filter((q: { createdAt: string | number | Date; }) => new Date(q.createdAt) >= oneWeekAgo);
       case 'thisMonth':
         const oneMonthAgo = new Date();
         oneMonthAgo.setMonth(now.getMonth() - 1);
-        return questionDetails.filter(q => new Date(q.createdAt) >= oneMonthAgo);
+        return questionDetails.filter((q: { createdAt: string | number | Date; }) => new Date(q.createdAt) >= oneMonthAgo);
       case 'new':
         return questionDetails.slice(0, 8);  // Return only the first 8 questions
       case 'all':

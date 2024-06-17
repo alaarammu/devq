@@ -1,3 +1,4 @@
+"use client"
 import { useState } from 'react'; // Importing the useState hook from React
 import { FaTrash } from 'react-icons/fa'; // Importing the FaTrash icon from react-icons library
 
