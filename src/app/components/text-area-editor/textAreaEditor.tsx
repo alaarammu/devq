@@ -1,39 +1,43 @@
-"use client";
-import React, { useRef, useState, useMemo, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+"use client"; 
 
-// Define the type for JoditEditor
+import React, { useRef, useState, useMemo, useEffect } from 'react'; 
+import dynamic from 'next/dynamic'; 
+
+// Dynamically import JoditEditor to avoid server-side rendering issues, and cast it to 'any' type
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false }) as any;
 
+// Define the props type for the RichTextEditor component
 interface RichTextEditorProps {
-  content: string;
-  setContent: (content: string) => void;
-  placeholder?: string;
-  readonly?: boolean;
+  content: string; // The content to be edited
+  setContent: (content: string) => void; // Function to update the content
+  placeholder?: string; // Optional placeholder text
+  readonly?: boolean; // Optional flag to make the editor read-only
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({
   content,
   setContent,
-  placeholder = 'Start typing...',
-  readonly = false,
+  placeholder = 'Start typing...', 
+  readonly = false, // Default value for readonly is false
 }) => {
-  const editor = useRef<any>(null);
-  const [isClient, setIsClient] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const editor = useRef<any>(null); // Ref to access the JoditEditor instance
+  const [isClient, setIsClient] = useState<boolean>(false); // State to check if component is mounted on the client
+  const [loading, setLoading] = useState<boolean>(true); // State to handle the loading state of the editor
 
+  // useEffect hook to set isClient to true after the component is mounted
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  // useMemo hook to configure the JoditEditor settings
   const config = useMemo(() => ({
     readonly: readonly,
     placeholder: placeholder || 'Start typing...',
-    removeButtons: ['about'],
-    showCharsCounter: false,
-    showWordsCounter: false,
-    showXPathInStatusbar: false,
-    toolbarAdaptive: false,
+    removeButtons: ['about'], // Remove the 'about' button from the toolbar
+    showCharsCounter: false, // Hide the characters counter
+    showWordsCounter: false, // Hide the words counter
+    showXPathInStatusbar: false, // Hide the XPath in the status bar
+    toolbarAdaptive: false, // Disable adaptive toolbar
     buttons: [
       'bold', 'italic', 'underline', '|',
       'ul', 'ol', '|',
@@ -42,13 +46,14 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       'align', 'undo', 'redo', '|',
       'hr', 'eraser', 'copyformat', '|',
       'fullsize', 'selectall', 'print', 'source'
-    ],
-    allowResizeX: false,
-    allowResizeY: false,
-    allowHTML: true,  // Allows HTML to be inserted
-    cleanHTML: false  // Disables the cleaning of HTML when pasting or loading content
+    ], // Define the toolbar buttons
+    allowResizeX: false, // Disable horizontal resizing
+    allowResizeY: false, // Disable vertical resizing
+    allowHTML: true,  // Allow HTML to be inserted
+    cleanHTML: false  // Disable cleaning of HTML when pasting or loading content
   }), [readonly, placeholder]);
 
+  // useEffect hook to append custom styles and simulate editor loading time
   useEffect(() => {
     if (isClient) {
       const style = document.createElement('style');
@@ -66,25 +71,26 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     }
   }, [isClient]);
 
+  // If the component is not mounted on the client, do not render anything
   if (!isClient) {
-    return null; // Prevent rendering on the server
+    return null;
   }
 
   return (
     <div className='mt-3'>
       {loading ? (
-        <div>Loading editor...</div> // Add your spinner or loading component here
+        <div>Loading editor...</div> // Display a loading message or component while the editor is initializing
       ) : (
         <JoditEditor
-          ref={editor}
-          value={content}
-          config={config}
-          onBlur={(newContent: string) => setContent(newContent)}
-          onChange={(newContent: string) => setContent(newContent)}
+          ref={editor} // Assign the ref to the editor instance
+          value={content} // Set the current content
+          config={config} // Apply the editor configuration
+          onBlur={(newContent: string) => setContent(newContent)} // Update the content onBlur event
+          onChange={(newContent: string) => setContent(newContent)} // Update the content onChange event
         />
       )}
     </div>
   );
 };
 
-export default RichTextEditor;
+export default RichTextEditor; 

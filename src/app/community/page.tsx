@@ -38,7 +38,6 @@ function Community() {
     setShowModal(false);
   };
 
-
   const handleSort = () => {
     setSorted(!sorted);
   };
