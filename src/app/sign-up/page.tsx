@@ -6,11 +6,12 @@ import Image1 from "/public/images/logo-dark.png";
 import Link from "next/link";
 import Footer from "../components/footer";
 import { createUserAndAssignRole } from '../../../services/authServices/authService';
-import { createCompany } from "../../../services/authServices/localAuthService";
+import { createCompany, createUser } from "../../../services/authServices/localAuthService";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
-
-  const [companyName, setCompanyName] = useState('');
+  const router = useRouter();
+  const [companyName, setCompanyName] = useState<string>('');
   const [supportEmail, setSupportEmail] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +26,7 @@ const SignUp = () => {
       return;
     }
 
-    const roleId = 'rol_2rCkzAddsZmdnXk5';
+    const roleId: any = process.env.NEXT_PUBLIC_ADMIN_ROLE_ID;
 
     try {
       const userData = {
@@ -37,9 +38,13 @@ const SignUp = () => {
 
       const response = await createUserAndAssignRole(userData, roleId);
       console.log("data", response)
-      if (response.email_verified) {
-        const name = email.split('@')[0];
-        const response = await createCompany({ name, email });
+      if (response.access_token) {
+
+        const response = await createCompany({ name: companyName, email: supportEmail });
+        if (response) {
+          await createNewUser(response)
+          console.log("responses", response);
+        }
         console.log('Response:', response);
       }
 
@@ -48,6 +53,20 @@ const SignUp = () => {
       setError(`An error occurred while signing up.`);
     }
   };
+
+  const createNewUser = async (value: any) => {
+    const name = email.split('@')[0];
+    const role = 0
+    const position = "company owner";
+    const company_id = value.data.id
+    console.log("company data",);
+    const response: any = await createUser({ name: name, email: email, role: role, company_id: company_id, position: position });
+
+    if (response) {
+      router.push('/login')
+    }
+
+  }
   return (
     <div>
       <Head>

@@ -6,11 +6,16 @@ import { getAllQuestionByUserId } from '../../../services/questionServices/quest
 import useAuthStore from '../../../services/utils/authStore';
 
 export default function Home() {
-  const [activeButton, setActiveButton] = useState('new');
+  const [activeButton, setActiveButton] = useState('all');
   const [questionDetails, setQuestionDetails] = useState<any>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+  const { user } = useAuthStore();
+  let user_id : any = user?.id;
 
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
+    setCurrentPage(1);
   };
 
   const getButtonClasses = (button: string) => (
@@ -21,6 +26,8 @@ export default function Home() {
 
   const getActiveText = () => {
     switch (activeButton) {
+      case 'all':
+        return 'All Questions';
       case 'new':
         return 'New Questions';
       case 'today':
@@ -35,15 +42,93 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getCompanyQuestion()
-  }, [])
-  
+    getCompanyQuestion();
+  }, []);
+
   const getCompanyQuestion = async () => {
-    let companyId = useAuthStore.getState().user.company?.id
-    const result = await getAllQuestionByUserId(companyId);
-    setQuestionDetails(result.data)
-    console.log("data", result.data)
-  }
+    let userId = useAuthStore.getState().user?.id;
+    console.log("data", userId);
+    const result = await getAllQuestionByUserId(userId);
+    setQuestionDetails(result.data);
+    console.log("data", result.data);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(filterQuestions().length / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const renderPagination = () => {
+    const totalPages = Math.ceil(filterQuestions().length / itemsPerPage);
+    if (totalPages <= 1) return null; 
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`mx-1 px-3 py-1 rounded ${i === currentPage ? 'bg-indigo-400 text-white' : 'bg-white border border-indigo-400 text-indigo-400'}`}
+        >
+          {i}
+        </button>
+      );
+    }
+    return (
+      <div className="flex justify-center items-center space-x-1">
+        <button
+          onClick={handlePreviousPage}
+          className={`px-3 py-1 rounded ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-white border border-indigo-400 text-indigo-400'}`}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        {pages}
+        <button
+          onClick={handleNextPage}
+          className={`px-3 py-1 rounded ${currentPage === totalPages ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-white border border-indigo-400 text-indigo-400'}`}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
+    );
+  };
+
+  const filterQuestions = () => {
+    const now = new Date();
+    switch (activeButton) {
+      case 'today':
+        return questionDetails.filter(q => new Date(q.createdAt).toDateString() === now.toDateString());
+      case 'thisWeek':
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(now.getDate() - 7);
+        return questionDetails.filter(q => new Date(q.createdAt) >= oneWeekAgo);
+      case 'thisMonth':
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(now.getMonth() - 1);
+        return questionDetails.filter(q => new Date(q.createdAt) >= oneMonthAgo);
+      case 'new':
+        return questionDetails.slice(0, 8);  // Return only the first 8 questions
+      case 'all':
+      default:
+        return questionDetails;
+    }
+  };
+
+  const filteredQuestions = filterQuestions();
+  const currentItems = filteredQuestions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   return (
     <div className="w-full overflow-x-auto"> {/* Allow horizontal scroll on small screens */}
       <div className="mt-9 px-3 ml-9">
@@ -52,6 +137,10 @@ export default function Home() {
         </div>
         <div className="flex justify-between items-center pt-5">
           <div className="bg-white p-3 flex space-x-3 border border-indigo-400 rounded-md flex-shrink-0 mr-9">
+            <button onClick={() => handleButtonClick('all')} className={getButtonClasses('all')}>
+              All
+            </button>
+
             <button onClick={() => handleButtonClick('new')} className={getButtonClasses('new')}>
               New
             </button>
@@ -80,9 +169,30 @@ export default function Home() {
         </div>
       </div>
       <div className='mt-8 px-8'>
-        {questionDetails.length >= 0 && questionDetails.map((detail: any, index: number) => (
-          <Card key={index} questionId={detail.id} questionTitle={detail.title} tags={detail.tags} user={detail.user} />
-        ))}
+        {currentItems.length > 0 ? (
+          <>
+            {currentItems.map((detail: any, index: number) => (
+              <Card
+                key={index}
+                questionId={detail.id}
+                questionTitle={detail.title}
+                tags={detail.tags}
+                user={detail.user}
+                answerCount={detail.answers.length}
+                likes={detail.likes}
+                currentUser={user_id}
+                refreshQuestions={getCompanyQuestion}
+              />
+            ))}
+            <div className="flex justify-center mt-4">
+              {renderPagination()}
+            </div>
+          </>
+        ) : (
+          <div className="text-center text-gray-500">
+            No questions to display.
+          </div>
+        )}
       </div>
     </div>
   );

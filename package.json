@@ -27,14 +27,15 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.26.4",
+    "sharp": "^0.33.4",
     "yup": "^1.4.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/auth0-js": "^9.21.6",
     "@types/he": "^1.2.3",
-    "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18",
     "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "^8",
