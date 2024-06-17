@@ -10,7 +10,9 @@ import { useRouter } from "next/navigation";
 export default function Header() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const router = useRouter();
-  
+  const { user } = useAuthStore();
+  const user_name = user?.name;
+
   const handleLogout = () => {
     useAuthStore.getState().logoutAccount();
     router.push(`/login`);
@@ -39,10 +41,11 @@ export default function Header() {
           <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-950 text-2xl" />
         </div>
         <div className="relative">
-          <PiMegaphoneSimpleLight
-            className="text-3xl cursor-pointer"
+          <div className="bg-[#211951] text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-2"
             onClick={toggleDropdown}
-          />
+          >
+           {user_name?.split(' ').map((n) => n[0].toUpperCase()).join('')}
+          </div>
           {isDropdownVisible && (
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
               <div className="flex flex-col items-center">
