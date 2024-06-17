@@ -29,12 +29,12 @@ interface CardProps {
   name: string;
   email: string;
   position: string;
-  userID: string;
+  userID: number;
 }
 
 const Card: React.FC<CardProps> = ({ name, email, position, userID }) => {
   const { user } = useAuthStore();
-  const user_id = user?.id;
+  const user_id: any= user?.id;
 
   return (<div className="border border-gray-300 rounded-lg p-5 shadow-md relative">
     <div className="flex items-center mb-2">
@@ -48,7 +48,7 @@ const Card: React.FC<CardProps> = ({ name, email, position, userID }) => {
     </div>
     <p className="text-sm font-bold text-gray-800">{position}</p>
     {/* Delete icon */}
-    {user_id !== userID && (
+    {user_id != userID && (
       <button className="absolute top-1 right-1 text-gray-500 hover:text-red-500 mr-2 mt-2">
         <AiOutlineDelete />
       </button>

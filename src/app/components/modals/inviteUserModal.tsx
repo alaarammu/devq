@@ -19,6 +19,12 @@ type OptionType = {
   label: string;
 };
 
+type FormData = {
+  email: string;
+  position: OptionType | null;
+  role: OptionType | null;
+};
+
 const animatedComponents = makeAnimated();
 
 const positionOptions: OptionType[] = [
@@ -117,7 +123,7 @@ const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
       const response: any = await createNewUser({ name: name, email: data.email, role: role, company_id: companyId, position: position, password: newPassword});
 
       if(response){ 
-        reset({ email: '', position: null, role: null });
+        reset({ email: '', position: null, role: null } as any);
         onClose();
       }
     }
@@ -125,7 +131,7 @@ const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
   };
 
   const handleClose = () => {
-    reset({ email: '', position: null, role: null });
+    reset({ email: '', position: null, role: null } as any);
     onClose();
   };
 
