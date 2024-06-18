@@ -12,6 +12,7 @@ interface User {
   email: string;
   id: number;
   name: string;
+  role:number;
 }
 
 function Community() {
@@ -95,6 +96,8 @@ function Community() {
             email={card.email}
             position={card.position}
             userID={card.id}
+            role={card.role}
+            refreshUser={getCompanyQuestion}
           />
         ))}
       </div>
