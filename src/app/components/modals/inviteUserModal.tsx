@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 interface ModalProps {
   show: boolean;
   onClose: () => void;
+  refreshUser: () => void;
 }
 
 type OptionType = {
@@ -83,7 +84,7 @@ const validationSchema = yup.object().shape({
   }).nullable().required('Role is required')
 });
 
-const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
+const InviteUserModal: React.FC<ModalProps> = ({ show, onClose, refreshUser}) => {
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(validationSchema)
   });
@@ -125,6 +126,7 @@ const InviteUserModal: React.FC<ModalProps> = ({ show, onClose }) => {
       if(response){ 
         reset({ email: '', position: null, role: null } as any);
         onClose();
+        refreshUser();
       }
     }
     // Handle form submission

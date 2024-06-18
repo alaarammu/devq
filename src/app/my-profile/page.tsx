@@ -10,7 +10,7 @@ export default function MyProfile() {
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer | null>("");
   const [fullName, setFullName] = useState<any>("");
   const [email, setEmail] = useState<any>("");
-  const [role, setRole] = useState("User");
+  const [role, setRole] = useState<string>("");
   const [isEditable, setIsEditable] = useState(false);
   const [UserDetails, setUserDetails] = useState(false);
 
@@ -38,9 +38,16 @@ export default function MyProfile() {
     let email: any = useAuthStore.getState().user.email;
     const result = await getUserDetails({ email });
     if (result) {
+      console.log("Data",result)
       setUserDetails(result);
       setFullName(result.name);
       setEmail(result.email)
+      if(result.role == 0){
+        setRole("Admin")
+      }
+      if(result.role == 1){
+        setRole("Recruiter")
+      }
     }
     console.log("data", result);
   };
