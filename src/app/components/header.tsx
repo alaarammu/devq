@@ -5,6 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import { PiMegaphoneSimpleLight } from "react-icons/pi";
 import useAuthStore from "../../../services/utils/authStore";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 
 export default function Header() {
@@ -12,7 +13,8 @@ export default function Header() {
   const router = useRouter();
   const { user } = useAuthStore();
   const user_name = user?.name;
-
+  const image_url = user?.image_url;
+  
   const handleLogout = () => {
     useAuthStore.getState().logoutAccount();
     router.push(`/login`);
@@ -44,7 +46,17 @@ export default function Header() {
           <div className="bg-[#211951] text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-2"
             onClick={toggleDropdown}
           >
-           {user_name?.split(' ').map((n) => n[0].toUpperCase()).join('')}
+         {image_url ? (
+              <Image
+                src={image_url}
+                alt="Profile"
+                className="rounded-full"
+                width={32}
+                height={32}
+              />
+            ) : (
+              user_name?.split(' ').map((n) => n[0].toUpperCase()).join('')
+            )}
           </div>
           {isDropdownVisible && (
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">

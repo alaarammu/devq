@@ -11,6 +11,7 @@ export interface User {
     name?: string;
     email?: string;
     role?: number;
+    image_url?: string;
     company?: {
         id?: string;
         name?: string;

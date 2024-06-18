@@ -42,3 +42,13 @@ export const createNewUser = async (userData: { name: string; email: string, rol
         throw error;
     }
 };
+
+export const updateUser = async (userId: number, updateData: { role: number; position: string }) => {
+    try {
+      const response = await apiClient.patch(`/user/update/${userId}`, updateData);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw error;
+    }
+  };

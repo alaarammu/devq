@@ -8,6 +8,8 @@ import RichTextEditor from '@/app/components/text-area-editor/textAreaEditor';
 import { AiOutlineDelete } from 'react-icons/ai';
 import ConfirmationModal from '../../components/modals/confirmationModal';
 import { deleteAnswerById } from '../../../../services/questionServices/questionService';
+import { CodeBlock, dracula } from 'react-code-blocks';
+
 
 export default function QuestionAnswer() {
   const searchParams = useSearchParams();
@@ -94,7 +96,7 @@ export default function QuestionAnswer() {
     }
   };
 
-  
+
   const deleteAnswer = (answerId: string) => {
     setSelectedAnswerId(answerId);
     setIsModalVisible(true);
@@ -126,7 +128,12 @@ export default function QuestionAnswer() {
         >
           {isCopied ? 'Copied' : 'Copy Code'}
         </button>
-        <code>{questionDetails?.description}</code>
+        <CodeBlock
+          text={questionDetails?.description}
+          language={'text'}
+          showLineNumbers={true}
+          theme={dracula}
+        />
       </div>
       {questionDetails?.answers.length > 0 && (
         <div className="mt-4 ml-1">
@@ -142,10 +149,10 @@ export default function QuestionAnswer() {
                   Answered by <span className="text-blue-500">{answer.user.name}</span>
                 </p>
                 {useAuthStore.getState().user.id === answer.user.id && (
-                  <AiOutlineDelete 
-                  onClick={() => deleteAnswer(answer.id)} 
-                  className="ml-4 mt-1 text-red-500 cursor-pointer hover:text-red-700" 
-                />
+                  <AiOutlineDelete
+                    onClick={() => deleteAnswer(answer.id)}
+                    className="ml-4 mt-1 text-red-500 cursor-pointer hover:text-red-700"
+                  />
                 )}
               </div>
             </div>

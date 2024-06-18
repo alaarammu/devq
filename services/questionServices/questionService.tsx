@@ -87,3 +87,13 @@ export const unlikeAQuestion = async (userId: any, questionId: any) => {
         throw error;
     }
 };
+
+export const getAllQuestionRelateToUserId = async (userId: any) => {
+    try {
+        const response = await apiClient.get(`/question/one-user/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        throw error;
+    }
+};

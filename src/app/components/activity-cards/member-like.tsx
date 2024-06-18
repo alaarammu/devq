@@ -1,4 +1,5 @@
 import { LuMessagesSquare } from "react-icons/lu";
+import { GoHeart } from "react-icons/go";
 import moment from 'moment';
 interface User {
   email: string;
@@ -29,7 +30,7 @@ interface QuestionPostedProps {
   createdAt: Date;
 }
 
-export default function MemberQuestion({ userData, question, createdAt, performedBy }: QuestionPostedProps) {
+export default function MemberLike({ userData, question, createdAt, performedBy }: QuestionPostedProps) {
   const now = moment();
   const createdAtMoment = moment(createdAt);
   const minutesDifference = now.diff(createdAtMoment, 'minutes');
@@ -47,10 +48,10 @@ export default function MemberQuestion({ userData, question, createdAt, performe
   return (
     <div className="bg-indigo-100 p-6 rounded-xl">
       <div className=" flex">
-        <LuMessagesSquare className="mr-3 text-indigo-400  text-2xl" />
+        <GoHeart className="mr-3 text-indigo-400  text-2xl" />
         <div className="flex flex-row justify-between w-full">
           <p className="font-semibold text-blue-950">
-            {performedBy.name} replyed your question
+            {performedBy.name} is Liked your question
           </p>
           <p className="text-gray-600">{timeDifference}</p>
         </div>

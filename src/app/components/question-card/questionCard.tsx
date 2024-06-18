@@ -25,7 +25,6 @@ const QuestionCard: React.FC<CardProps> = ({ questionId, questionTitle, tags, us
     const router = useRouter();
 
     const handleCardClick = () => {
-        // Navigate to the ask-question page
         router.push(`/questions/answer-question?id=${questionId}`);
     };
 

@@ -12,6 +12,7 @@ interface User {
   email: string;
   id: number;
   name: string;
+  role:number;
 }
 
 function Community() {
@@ -47,14 +48,15 @@ function Community() {
     .sort((a, b) => sorted ? a.name.localeCompare(b.name) : 0);
 
   useEffect(() => {
-    const getCompanyQuestion = async () => {
-      let companyId = useAuthStore.getState().user.company?.id
-      const result = await getAllUsersByCompanyId(companyId);
-      setCardsData(result.data.users)
-      console.log("data", result.data)
-    }
     getCompanyQuestion()
   }, [])
+
+  const getCompanyQuestion = async () => {
+    let companyId = useAuthStore.getState().user.company?.id
+    const result = await getAllUsersByCompanyId(companyId);
+    setCardsData(result.data.users)
+    console.log("data", result.data)
+  }
 
   return (
     <div className="mt-9 ml-11 mr-11">
@@ -88,10 +90,22 @@ function Community() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pr-7 mt-4">
         {filteredCards.map((card, index) => (
-          <Card key={index} name={card.name} email={card.email} position={card.position} userID={card.id}/>
+          <Card
+            key={index}
+            name={card.name}
+            email={card.email}
+            position={card.position}
+            userID={card.id}
+            role={card.role}
+            refreshUser={getCompanyQuestion}
+          />
         ))}
       </div>
-      <Modal show={showModal} onClose={handleCloseModal} />
+      <Modal
+        show={showModal}
+        onClose={handleCloseModal}
+        refreshUser={getCompanyQuestion}
+      />
     </div>
   );
 }
