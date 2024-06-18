@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({ name, email, position, userID, role, refres
 
   return (
     <>
-      <div className="border border-gray-300 rounded-lg p-5 shadow-md relative">
+      <div className="border border-gray-300 rounded-lg p-5 shadow-md relative min-w-[250px]">
         <div className="flex items-center mb-2">
           <div className="bg-[#211951] text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-2">
             {name.split(' ').map((n) => n[0]).join('')}

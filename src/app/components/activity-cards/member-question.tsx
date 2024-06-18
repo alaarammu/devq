@@ -50,7 +50,7 @@ export default function MemberQuestion({ userData, question, createdAt, performe
         <LuMessagesSquare className="mr-3 text-indigo-400  text-2xl" />
         <div className="flex flex-row justify-between w-full">
           <p className="font-semibold text-blue-950">
-            {performedBy.name} replyed your question
+            {performedBy.name} replied to your question
           </p>
           <p className="text-gray-600">{timeDifference}</p>
         </div>

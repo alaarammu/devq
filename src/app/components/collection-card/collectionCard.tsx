@@ -14,7 +14,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ tagName, questionCount,
         <div className="my-2 p-2 border bg-indigo-100 rounded-md shadow-sm">
           <p className="text-sm">{tagName}</p>
         </div>
-        <h5>Questions {questionCount}</h5>
+        <h5>{questionCount} Questions</h5>
       </div>
     </div>
   );

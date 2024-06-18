@@ -51,7 +51,7 @@ export default function MemberLike({ userData, question, createdAt, performedBy 
         <GoHeart className="mr-3 text-indigo-400  text-2xl" />
         <div className="flex flex-row justify-between w-full">
           <p className="font-semibold text-blue-950">
-            {performedBy.name} is Liked your question
+            {performedBy.name} Liked your question.
           </p>
           <p className="text-gray-600">{timeDifference}</p>
         </div>

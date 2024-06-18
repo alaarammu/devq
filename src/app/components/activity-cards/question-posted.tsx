@@ -57,7 +57,7 @@ export default function QuestionPosted({ notificationText, userData, question, c
         <div className="flex">
           <FaRegMessage className="mr-3 text-indigo-400 mb-2 text-2xl" />
           {userData.id == user_id ?
-            <p className="font-semibold text-blue-950 mb-6">Your question added successfully</p>
+            <p className="font-semibold text-blue-950 mb-6">Your question was added successfully</p>
             :
             <p className="font-semibold text-blue-950 mb-6">
               New question added by {userData.name}

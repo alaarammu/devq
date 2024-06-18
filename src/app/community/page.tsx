@@ -1,18 +1,18 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { FaExchangeAlt } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
-import Card from '../components/user-card/userCard';
-import Modal from '../components/modals/inviteUserModal';
-import { getAllUsersByCompanyId } from '../../../services/companyServices/companyService';
-import useAuthStore from '../../../services/utils/authStore';
+import Card from "../components/user-card/userCard";
+import Modal from "../components/modals/inviteUserModal";
+import { getAllUsersByCompanyId } from "../../../services/companyServices/companyService";
+import useAuthStore from "../../../services/utils/authStore";
 
 interface User {
   position: string;
   email: string;
   id: number;
   name: string;
-  role:number;
+  role: number;
 }
 
 function Community() {
@@ -44,25 +44,27 @@ function Community() {
   };
 
   const filteredCards = cardsData
-    .filter(card => card.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    .sort((a, b) => sorted ? a.name.localeCompare(b.name) : 0);
+    .filter((card) =>
+      card.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => (sorted ? a.name.localeCompare(b.name) : 0));
 
   useEffect(() => {
-    getCompanyQuestion()
-  }, [])
+    getCompanyQuestion();
+  }, []);
 
   const getCompanyQuestion = async () => {
-    let companyId = useAuthStore.getState().user.company?.id
+    let companyId = useAuthStore.getState().user.company?.id;
     const result = await getAllUsersByCompanyId(companyId);
-    setCardsData(result.data.users)
-    console.log("data", result.data)
-  }
+    setCardsData(result.data.users);
+    console.log("data", result.data);
+  };
 
   return (
     <div className="mt-9 ml-11 mr-11">
       <p className="text-2xl font-semibold">All members</p>
-      <div className='mt-3 flex flex-row justify-between w-full flex-wrap'>
-        <div className='flex flex-row gap-2 items-center flex-wrap'>
+      <div className="mt-3 flex flex-row justify-between w-full flex-wrap">
+        <div className="flex flex-row gap-2 items-center flex-wrap">
           <p className="w-fit text-indigo-400">Name</p>
           <FaExchangeAlt
             className="text-indigo-400 transform rotate-90 cursor-pointer mr-3"
@@ -88,7 +90,7 @@ function Community() {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pr-7 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pr-7 mt-4 ">
         {filteredCards.map((card, index) => (
           <Card
             key={index}
