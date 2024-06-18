@@ -88,6 +88,7 @@ const createUserAndAssignRole = async (userData: UserData, roleId: string) => {
         throw error;
     }
 };
+
 const createNewUserAndAssignRole = async (userData: UserData, roleId: string) => {
     const token = await getAccessToken();
     console.log("token", token);
@@ -225,4 +226,39 @@ const changeUserRoleByEmail = async (email: string, newRoleId: string) => {
     }
 };
 //end user role change
-export { loginWithEmailPassword, createUserAndAssignRole, createNewUserAndAssignRole, changeUserRoleByEmail };
+
+const changeUserPassword = async (email: string, newPassword: string) => {
+    try {
+        const token = await getAccessToken();
+        const user = await getUserByEmail(email);
+
+        if (!user) {
+            throw new Error(`User with email ${email} not found`);
+        }
+
+        const userId = user.user_id;
+
+        const response = await axios.patch(`https://${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users/${userId}`, {
+            password: newPassword,
+            connection: "Username-Password-Authentication"
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log('Password changed successfully for:', email);
+        return response.data;
+    } catch (error: any) {
+        if (error.response) {
+            console.error('Auth0 API error:', error.response.data);
+            toast.error(error.response.data.error || error.response.data.message);
+        } else {
+            console.error('Error:', error.message);
+            toast.error('Failed to change password');
+        }
+        throw error;
+    }
+};
+export { loginWithEmailPassword, createUserAndAssignRole, createNewUserAndAssignRole, changeUserRoleByEmail, changeUserPassword};
