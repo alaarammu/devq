@@ -39,6 +39,7 @@ export default function QuestionAnswer() {
     }
   };
 
+  // fjfjsjjjsjs
   const handleCopy = () => {
     if (questionDetails) {
       const plainText = questionDetails?.description.replace(/<[^>]*>/g, '');
